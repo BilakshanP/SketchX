@@ -1,0 +1,5 @@
+pyrogram
+tgcrypto
+python-dotenv
+asyncio
+pytz #>= 2021.1

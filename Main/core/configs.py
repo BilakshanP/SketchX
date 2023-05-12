@@ -1,4 +1,4 @@
-from .helpers import env_helper as _env_helper
+from Main.core.helpers import env_helper as _env_helper
 
 _env_helper._load_dotenv()
 

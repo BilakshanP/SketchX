@@ -1,7 +1,7 @@
 from dotenv import load_dotenv as _load_dotenv
 from os import getenv as _getenv
 
-from .logging_helper import info as _info, error as _error, warn as _warn
+from Main.core.helpers.logging_helper import info as _info, error as _error, warn as _warn
 
 def load_env() -> bool:
     """

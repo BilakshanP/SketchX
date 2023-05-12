@@ -1,7 +1,9 @@
 from pyrogram.client import Client
 from asyncio import get_event_loop as _loop
+#from aiohttp import ClientSession as _ClientSession
 
 main_loop = _loop()
+#aiohttp_session = _ClientSession()
 
 from Main.core.configs import Config
 from Main.core.startup.pre_startup import load_clients

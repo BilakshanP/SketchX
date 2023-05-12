@@ -1,9 +1,11 @@
 from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.types import Message
+from pyrogram.errors import MessageTooLong
 from pyrogram.client import Client
 from pyrogram.handlers.message_handler import MessageHandler
 
 from Main import Config, apps
+#from Main.core.helpers.paste_helper import paste as _paste
 from Main.core.helpers.logging_helper import (
         info as _info, error as _error, warn as _warn, exception as _exception, debug as _debug
     )
@@ -42,6 +44,11 @@ def on_command(
                 raise StopPropagation
             except ContinuePropagation:
                 raise ContinuePropagation
+            #except MessageTooLong:
+            #    try:
+            #        await message.edit(await _paste("what"))
+            #    except:
+            #        print(await _paste("what"))
             except BaseException as e1:
                 try:
                     await message.edit("Something went wrong, check logs.")

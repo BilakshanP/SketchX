@@ -2,4 +2,5 @@ pyrogram
 tgcrypto
 python-dotenv
 asyncio
+aiohttp
 pytz #>= 2021.1

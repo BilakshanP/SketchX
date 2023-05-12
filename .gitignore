@@ -156,6 +156,7 @@ cython_debug/
 *.session
 *.session-journal
 
-# Test files
+#Userbot
 *test*/
 *test*
+Logs/

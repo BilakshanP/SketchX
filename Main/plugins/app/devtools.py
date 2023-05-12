@@ -16,8 +16,8 @@ async def json(client: Client, message: Message):
 async def get_session(client: Client, message: Message):
     session_string: str = await client.export_session_string()
 
-    await client.send_message("me", f"**Your __string session__ is**: `{session_string}`")
-    await message.edit("Your session string has been send to your saved messages.")
+    await client.send_message("me", f"**Your __session string__ is**: `{session_string}`")
+    await message.edit("The session string has been sent to your Saved Messaged!")
 
 @app.on_command(["restart"])
 async def restart(client: Client, message: Message):

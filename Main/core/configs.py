@@ -15,7 +15,6 @@ class Config:
     IS_LOCAL_DEPLOY: bool = get_env_bool("IS_LOCAL_DEPLOY", False)
 
     MAIN_BOT_TOKEN: str = get_env("MAIN_BOT_TOKEN") # type: ignore
-    MAIN_BOT_USERNAME: str|None = get_env("MAIN_BOT_USERNAME", False) # type: ignore
 
     ALIVE_IMAGE: str = get_env("ALIVE_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png") # type: ignore
     START_IMAGE: str = get_env("START_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png") # type: ignore
@@ -29,9 +28,7 @@ class Config:
 
     TIME_ZONE: str = get_env("TIME_ZONE", False, "Asia/Kolkata") # type: ignore
 
-    USERNAME: str|None = get_env("USERNAME", False)
-
-    DB_CHAT_ID: int = get_env_int("DB_CHAT_ID", False) # type: ignore
+    DB_CHAT_ID: int = get_env_int("DB_CHAT_ID") # type: ignore
     LOG_CHAT_ID: int|None = get_env_int("LOG_CHAT_ID", False)
     START_UP_CHAT_ID: int|None = get_env_int("START_UP_CHAT_ID", False)
     PLUGIN_CHANNEL_CHAT_ID: int|None = get_env("PLUGIN_CHANNEL_CHAT_ID", False) # type: ignore
@@ -53,16 +50,6 @@ class Config:
     PLUGIN_NO_LOAD_BOT: list[str] = get_env("PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
 
     # Conditional Statements and Fallbacks
-
-    NAME = ""
-
-    if USERNAME:
-        NAME = USERNAME
-
-    BOT_NAME = ""
-
-    if MAIN_BOT_USERNAME:
-        BOT_NAME = MAIN_BOT_USERNAME
     
     if SESSION_STRINGS == ['']:
         SESSION_STRINGS = []
@@ -77,5 +64,6 @@ class Config:
 
     # Post Start-Up Variables:
 
-    APP_LOADED: bool = False
-    BOT_LOADED: bool = False
+    # Testing purposes:
+
+    TEST: str = "?"

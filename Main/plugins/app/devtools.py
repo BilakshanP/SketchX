@@ -9,7 +9,7 @@ from Main.core.decorators import app
 
 @app.on_command(["json"])
 async def json(client: Client, message: Message):
-    await message.edit(f"{message}")
+    await message.edit(f"`{message}`")
 
 @app.on_command(["id"])
 async def id(client: Client, message: Message):

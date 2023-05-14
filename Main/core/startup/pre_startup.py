@@ -21,7 +21,7 @@ def load_clients() -> tuple[list[Client], list[Client]]:
             try:
                 clients[num].append(
                     Client(
-                        f"{index}@{name}", Config.API_ID, Config.API_HASH,
+                        f"{index}@{name}", Config.API_ID, Config.API_HASH, # type: ignore
                         bot_token = string_or_token if num else None,  # type: ignore
                         session_string = None if num else string_or_token  # type: ignore
                     )
@@ -32,7 +32,7 @@ def load_clients() -> tuple[list[Client], list[Client]]:
             except BaseException as e:
                 _exception(str(e))
 
-                if num:
+                if index:
                     _error(f"Couldn't load [{name.upper()}]: {num + 1}/{length}")
                 else:
                     _error(f"Couldn't load main [{name.upper()}]. Exitting...")

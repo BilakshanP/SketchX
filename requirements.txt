@@ -4,5 +4,4 @@ python-dotenv
 asyncio
 aiohttp
 uvloop
-contextlib
-pytz #>= 2021.1
+pytz

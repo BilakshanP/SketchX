@@ -1,12 +1,17 @@
+import re
+
 from typing import Any, Optional
 
 from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
+from Main.core.helpers.regex_helper import str_to_dict
 
 _env_helper._load_dotenv()
 
 get_env = _env_helper.get_env_or_default
 get_env_int = _env_helper.get_env_int_or_None
 get_env_bool = _env_helper.get_env_bool_or_default
+
+regex = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*")
 
 class Config:
     """
@@ -37,17 +42,22 @@ class Config:
 
     START_UP_TEXT: str = get_env("START_UP_TEXT", False, "Bot has started!") # type: ignore
 
-    DEBUG: bool = get_env_bool("DEBUG", False)
-
     SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
 
     SESSION_STRINGS: list[str] = get_env("SESSION_STRINGS", False, "").split(' ') # type: ignore
     BOT_TOKENS: list[str] = get_env("BOT_TOKENS", False, "").split(' ') # type: ignore
 
-    CUSTOM_DIRECTORIES: list[str] = get_env("CUSTOM_DIRECTORIES", False, "").split(' ') # type: ignore
-
     PLUGIN_NO_LOAD_APP: list[str] = get_env("PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
     PLUGIN_NO_LOAD_BOT: list[str] = get_env("PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
+
+    # For developers
+
+    DEBUG: bool = get_env_bool("DEBUG", False)
+
+    CUSTOM_DIRECTORIES: list[str] = get_env("CUSTOM_DIRECTORIES", False, "").split(' ') # type: ignore
+    CUSTOM_CONFIGS: dict[str, str] = str_to_dict(
+                                            get_env("CUSTOM_CONFIGS", False, "") # type: ignore
+                                        )
 
     # Conditional Statements and Fallbacks
     

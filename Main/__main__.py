@@ -5,19 +5,18 @@ from contextlib import closing, suppress
 
 from pyrogram.sync import idle
 
-from Main import all_clients, main_loop, aiohttp_session
-from Main.core.startup.post_startup import load_all_plugins
+from Main import clients, main_loop, aiohttp_session
+from Main.core.startup.post_startup import load_all_plugins, run_all_clients
+from Main.core.shutdown.shutdown import close_all_clients
 
 load_all_plugins(__file__)
 
 async def main():
-    for client in all_clients:
-        await client.start()
+    await run_all_clients(clients)
 
     await idle()
 
-    for client in all_clients:
-        await client.stop()
+    await close_all_clients(clients)
 
     await aiohttp_session.close()
 
@@ -30,5 +29,3 @@ if __name__ == "__main__":
     with closing(main_loop):
         with suppress(asyncio.exceptions.CancelledError):
             main_loop.run_until_complete(main())
-
-        main_loop.run_until_complete(asyncio.sleep(3.0))

@@ -3,11 +3,11 @@ from aiohttp import ClientSession as _ClientSession
 
 from pyrogram.client import Client
 
-main_loop = get_event_loop()
-aiohttp_session = _ClientSession()
-
 from Main.core.configs import Config
 from Main.core.startup.pre_startup import load_clients
+
+main_loop = get_event_loop()
+aiohttp_session = _ClientSession()
 
 clients: tuple[list[Client], list[Client]] = load_clients()
 

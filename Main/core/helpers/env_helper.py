@@ -1,5 +1,5 @@
-from dotenv import load_dotenv as _load_dotenv
 from os import getenv as _getenv
+from dotenv import load_dotenv as _load_dotenv
 
 from Main.core.helpers.logging_helper import info as _info, error as _error, warn as _warn
 

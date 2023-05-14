@@ -1,3 +1,5 @@
+from typing import Any, Optional
+
 from Main.core.helpers import env_helper as _env_helper
 
 _env_helper._load_dotenv()
@@ -14,30 +16,28 @@ class Config:
 
     IS_LOCAL_DEPLOY: bool = get_env_bool("IS_LOCAL_DEPLOY", False)
 
-    MAIN_BOT_TOKEN: str = get_env("MAIN_BOT_TOKEN") # type: ignore
+    MAIN_BOT_TOKEN: Optional[str] = get_env("MAIN_BOT_TOKEN")
 
-    ALIVE_IMAGE: str = get_env("ALIVE_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png") # type: ignore
-    START_IMAGE: str = get_env("START_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png") # type: ignore
+    ALIVE_IMAGE: Optional[str] = get_env("ALIVE_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png")
+    START_IMAGE: Optional[str] = get_env("START_IMAGE", False, "https://telegra.ph//file/bdacc5cdac69ea353190c.png")
 
-    API_ID: int = int(get_env("API_ID")) # type: ignore
-    API_HASH: str = get_env("API_HASH") # type: ignore
+    API_ID: Optional[int] = get_env_int("API_ID")
+    API_HASH: Optional[str] = get_env("API_HASH")
 
-    MAIN_SESSION: str = get_env("MAIN_SESSION")  # type: ignore
+    MAIN_SESSION: Optional[str] = get_env("MAIN_SESSION") 
 
     COMMAND_HANDLER: str = get_env("COMMAND_HANDLER", False, ".") # type: ignore
 
-    TIME_ZONE: str = get_env("TIME_ZONE", False, "Asia/Kolkata") # type: ignore
+    TIME_ZONE: Optional[str] = get_env("TIME_ZONE", False, "Asia/Kolkata")
 
     DB_CHAT_ID: int = get_env_int("DB_CHAT_ID") # type: ignore
-    LOG_CHAT_ID: int|None = get_env_int("LOG_CHAT_ID", False)
-    START_UP_CHAT_ID: int|None = get_env_int("START_UP_CHAT_ID", False)
-    PLUGIN_CHANNEL_CHAT_ID: int|None = get_env("PLUGIN_CHANNEL_CHAT_ID", False) # type: ignore
+    LOG_CHAT_ID: Optional[int] = get_env_int("LOG_CHAT_ID", False)
+    START_UP_CHAT_ID: Optional[int] = get_env_int("START_UP_CHAT_ID", False)
+    PLUGIN_CHANNEL_CHAT_ID: Optional[int] = get_env_int("PLUGIN_CHANNEL_CHAT_ID", False)
 
     START_UP_TEXT: str = get_env("START_UP_TEXT", False, "Bot has started!") # type: ignore
-    LOG_FILE_NAME: str = get_env("LOG_FILE_NAME", False, "Logs").strip(".log") + ".log" # type: ignore
 
     DEBUG: bool = get_env_bool("DEBUG", False)
-    DEBUG_LOG_FILE_NAME: str = get_env("DEBUG_LOG_FILE_NAME", False, "debug").strip(".log") + ".log" # type: ignore
 
     SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
 
@@ -59,8 +59,8 @@ class Config:
 
     # Compounds:
 
-    ALL_SESSION_STRINGS: list[str] = [MAIN_SESSION] + SESSION_STRINGS
-    ALL_BOT_TOKENS: list[str] = [MAIN_BOT_TOKEN] + BOT_TOKENS
+    ALL_SESSION_STRINGS: list[str] = [MAIN_SESSION] + SESSION_STRINGS # type: ignore
+    ALL_BOT_TOKENS: list[str] = [MAIN_BOT_TOKEN] + BOT_TOKENS # type: ignore
 
     # Post Start-Up Variables:
 

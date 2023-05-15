@@ -2,8 +2,8 @@ import re
 
 from typing import Any, Optional
 
-from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
 from Main.core.helpers.regex_helper import str_to_dict
+from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
 
 _env_helper._load_dotenv()
 
@@ -54,9 +54,12 @@ class Config:
 
     DEBUG: bool = get_env_bool("DEBUG", False)
 
+    CUSTOM_CONFIGS_FORMAT: int = get_env_int("CUSTOM_CONFIGS_FORMAT", False) or 1
+
     CUSTOM_DIRECTORIES: list[str] = get_env("CUSTOM_DIRECTORIES", False, "").split(' ') # type: ignore
     CUSTOM_CONFIGS: dict[str, str] = str_to_dict(
-                                            get_env("CUSTOM_CONFIGS", False, "") # type: ignore
+                                            get_env("CUSTOM_CONFIGS", False, ""), # type: ignore
+                                            CUSTOM_CONFIGS_FORMAT
                                         )
 
     # Conditional Statements and Fallbacks

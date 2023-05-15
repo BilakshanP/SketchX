@@ -15,14 +15,14 @@ async def close_all_clients(clients: tuple[list[Client], list[Client]]):
 
             try:
                 await app_or_bot.stop()
-                _info(f"Stopped [{name}]: {index + 1}/{length}")
+                _info(f"Stopped [{name}]: {index + 1}/{length}", "    ")
             
             except BaseException as e:
                 _exception(str(e))
 
                 if index:
-                    _error(f"Couldn't stop [{name}] properly: {num + 1}/{length}")
+                    _error(f"Couldn't stop [{name}] properly: {num + 1}/{length}", "    ")
                 else:
-                    _error(f"Couldn't stop main [{name}] properly.")
+                    _error(f"Couldn't stop main [{name}] properly.", "    ")
         
         _info(f"Stopped all {name.lower()}s")

@@ -1,3 +1,5 @@
+from traceback import format_exc
+
 from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.types import Message
 from pyrogram.errors import MessageTooLong
@@ -53,13 +55,25 @@ def on_command(
                 try:
                     await message.edit("Something went wrong, check logs.")
 
-                    _error(
-                        f"Exception - {func.__module__} - {func.__name__}\n{e1}"
+                    traceback = format_exc().replace("\n", "\n    ")
+
+                    _exception(
+                        f"Module: {func.__module__} - Function: {func.__name__}: {e1}"
+                    )
+                    _exception(
+                        traceback, silence = not Config.DEBUG
                     )
                 except BaseException as e2:
-                    _error(
-                        f"An exception occured while handling other exception - {func.__module__} - {func.__name__}"
-                        + f"Exception 1: {e1}\nException 2: {e2}"
+                    traceback = format_exc().replace("\n", "\n    ")
+
+                    _error("An exception occured while handling of another exception: ")
+
+                    _exception(
+                        f"Module: {func.__module__} - Function: {func.__name__}: {e2} during {e1}"
+                    )
+
+                    _exception(
+                        traceback, silence = not Config.DEBUG
                     )
         
         add_app_handler(base_filters, wrapper, func.__name__)

@@ -1,10 +1,14 @@
-from Main.core.helpers.http_helper import post
+from Main import aiohttp_session
 
-base = "https://batbin.me/"
-
-async def paste(content: str) -> str:
-    resp = await post(f"{base}api/v2/paste", data=content)
-    if not resp["success"]: # type: ignore
-        return ""
-
-    return base + resp["message"] # type: ignore
+async def paste(text: str) -> str|None:
+    try:
+        async with aiohttp_session as session:
+            async with session.post(
+                   'https://nekobin.com/api/documents', json = {
+                       "content": text
+                }
+                ) as response:
+                return f"https://nekobin.com/{(await response.json())['result']['key']}"
+    
+    except:
+        return None

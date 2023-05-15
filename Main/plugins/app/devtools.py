@@ -6,17 +6,12 @@ from pyrogram.types import Message
 from pyrogram.client import Client
 
 from Main.core.decorators import app
-from Main.core.helpers.paste_helper import paste
 
 
 @app.on_command(["json"])
 async def json(client: Client, message: Message):
     await message.edit(f"`{message}`")
 
-@app.on_command(["paste random"])
-async def paster(client: Client, message: Message):
-    x = await paste('what the fuck is this dawg')
-    await message.edit(f"{x}")
 
 @app.on_command(["id"])
 async def id(client: Client, message: Message):

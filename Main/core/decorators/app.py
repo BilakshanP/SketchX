@@ -2,7 +2,6 @@ from traceback import format_exc
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.types import Message
-from pyrogram.errors import MessageTooLong
 from pyrogram.client import Client
 from pyrogram.handlers.message_handler import MessageHandler
 

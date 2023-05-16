@@ -6,6 +6,11 @@ class Compiled:
     config_dict_match_1: re.Pattern = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*") # matches (var, val), ... u can add ,* and \s*
     config_dict_match_2: re.Pattern = re.compile(r"[a-zA-Z_]\w*\s*:\s*.*?;") # matches var:val; ... u can add ;* and \s*
 
+    command_match: re.Pattern = re.compile(r"\.\w+\s(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
+    command_match_args: re.Pattern = re.compile(r"(?<=-)\w(?!\w)")
+    compile_match_kwargs: re.Pattern = re.compile(r"--(\w{2,})\s?=\s?(\w+)")
+
+
 
 def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
     """
@@ -31,3 +36,4 @@ def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
         values.append(key_and_val[1].strip())
     
     return dict(zip(keys, values))
+

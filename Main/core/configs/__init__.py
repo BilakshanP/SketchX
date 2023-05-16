@@ -1,6 +1,6 @@
 import re
 
-from typing import Any, Optional
+from typing import Optional
 
 from Main.core.helpers.regex_helper import str_to_dict
 from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper

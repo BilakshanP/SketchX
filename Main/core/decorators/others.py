@@ -1,8 +1,8 @@
-def monkeypatch(obj):
-    def wrapper(sub):
-        for (func_name, func_) in sub.__dict__.items():
+def monkeypatch(parent_class):
+    def wrapper(surrogate_class):
+        for (func_name, func) in surrogate_class.__dict__.items():
             if func_name[:2] != "__":
-                setattr(obj, func_name, func_)
-        return sub
+                setattr(parent_class, func_name, func)
+        return surrogate_class
 
     return wrapper

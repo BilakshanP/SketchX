@@ -8,6 +8,12 @@ from Main.core.helpers.type_helper import MessageHelper
 class Message(_Message):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        
-        self.raw_text = self.text
-        
+
+        self.input: str
+        self.args: list[str]
+        self.kwargs: dict[str, str]
+        self.cmd: str
+
+    async def initialise_attributes(self):
+        self.input, self.args, self.kwargs, self.cmd = MessageHelper.process_input(self.text)
+        return self.input, self.args, self.kwargs, self.cmd

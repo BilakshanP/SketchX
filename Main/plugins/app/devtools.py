@@ -5,12 +5,17 @@ from pyrogram import filters
 from pyrogram.types import Message
 from pyrogram.client import Client
 
+from Main.core.types.message import Message
 from Main.core.decorators import app
 
 
 @app.on_command(["json"])
 async def json(client: Client, message: Message):
     await message.edit(f"`{message}`")
+
+@app.on_command(["test"])
+async def test_json(client: Client, message: Message):
+    await message.edit(f"text: {message.text}\ninput: {message.input}\nargs: {message.args}\nkwargs: {message.kwargs}\ncommad: {message.cmd}")
 
 
 @app.on_command(["id"])

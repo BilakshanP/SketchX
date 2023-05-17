@@ -13,8 +13,9 @@ async def close_all_clients(clients: tuple[list[Client], list[Client]]):
     for num, name in enumerate(["APP", "BOT"]):
         length: int = len(clients[num])
 
+        _info(f"Stopping {name.lower()}s:")
+
         for index, app_or_bot in enumerate(clients[num]):
-            _info(f"Stopping {name.lower()}s:")
 
             try:
                 await app_or_bot.stop()

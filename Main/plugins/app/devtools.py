@@ -35,7 +35,7 @@ async def id(client: Client, message: Message):
             [
                 text, "\n"
                 f"Replied Message ID: `{message.reply_to_message.id}`",
-                f"Replied User ID: `{message.reply_to_message.from_user.id}`" # or message.sender_chat.id}`",
+                f"Replied User ID: `{message.reply_to_message.from_user.id}`", # or message.sender_chat.id}`",
                 f"Replied User DC ID: `{message.reply_to_message.from_user.dc_id}`" # or message.sender_chat.dc_id}`"
             ]
         )

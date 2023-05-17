@@ -4,10 +4,9 @@ from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.client import Client
 from pyrogram.handlers.message_handler import MessageHandler
 
-from Main.core.types.message import Message
-
 from Main import Config, apps
-#from Main.core.helpers.paste_helper import paste as _paste
+from Main.core.types.message import Message
+from Main.core.helpers.misc_helpers import is_present
 from Main.core.helpers.logging_helper import (
         info as _info, error as _error, warn as _warn, exception as _exception, debug as _debug
     )
@@ -41,7 +40,7 @@ def on_command(
             _debug(f"Called {func.__name__}")
 
             try:
-                if not "#NoUB" in message.chat.title:
+                if Config.FORCE or not is_present("#NoUB", [message.chat.title, message.chat.first_name, message.chat.last_name]):
                     await message.initialise_attributes()
                     await func(client, message)
                 else:

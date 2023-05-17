@@ -54,6 +54,8 @@ class Config:
 
     DEBUG: bool = get_env_bool("DEBUG", False)
 
+    FORCE: bool = get_env_bool("FORCE", False)
+
     CUSTOM_CONFIGS_FORMAT: int = get_env_int("CUSTOM_CONFIGS_FORMAT", False) or 1
 
     CUSTOM_DIRECTORIES: list[str] = get_env("CUSTOM_DIRECTORIES", False, "").split(' ') # type: ignore

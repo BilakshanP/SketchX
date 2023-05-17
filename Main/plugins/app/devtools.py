@@ -35,20 +35,22 @@ async def id(client: Client, message: Message):
             [
                 text, "\n"
                 f"Replied Message ID: `{message.reply_to_message.id}`",
-                f"Replied User ID: `{message.reply_to_message.from_user.id or message.sender_chat.id}`",
-                f"Replied User DC ID: `{message.reply_to_message.from_user.dc_id or message.sender_chat.dc_id}`"
+                f"Replied User ID: `{message.reply_to_message.from_user.id}`" # or message.sender_chat.id}`",
+                f"Replied User DC ID: `{message.reply_to_message.from_user.dc_id}`" # or message.sender_chat.dc_id}`"
             ]
         )
     
-    if message.forward_from_chat:
-        text = "\n".join(
-            [
-                text, "\n",
-                f"Forwarded from Message ID: `{message.forward_from_message_id}`",
-                f"Forwarded from ID: `{message.forward_from_chat.id}`"
-                f"Forwarded from DC ID:`{message.forward_from_chat.dc_id}`"
-            ]
-        )
+    # To be fixed
+    #
+    # if message.forward_from_chat:
+    #     text = "\n".join(
+    #         [
+    #             text, "\n",
+    #             f"Forwarded from Message ID: `{message.forward_from_message_id}`",
+    #             f"Forwarded from ID: `{message.forward_from_chat.id}`"
+    #             f"Forwarded from DC ID:`{message.forward_from_chat.dc_id}`"
+    #         ]
+    #     )
 
     await message.edit("**__" + text + "__**")
 

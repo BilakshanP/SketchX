@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, Any
 
 def is_present(substring: str, iterable: Iterable[str]):
     for string in iterable:
@@ -6,3 +6,9 @@ def is_present(substring: str, iterable: Iterable[str]):
             return True
     
     return False
+
+def set_to_empty(iterable: list[Any]) -> list[Any]:
+    if iterable == ['']:
+        iterable = []
+
+    return iterable

@@ -13,5 +13,11 @@ clients: tuple[list[Client], list[Client]] = load_clients()
 
 all_clients: list[Client] = clients[0] + clients[1]
 
-apps: list[Client] = clients[0]
-bots: list[Client] = clients[0]
+all_apps: list[Client] = clients[0]
+all_bots: list[Client] = clients[0]
+
+main_app: Client = all_apps[0]
+main_bot: Client = all_bots[0]
+
+other_apps: list[Client] = all_apps[1:]
+other_bots: list[Client] = all_bots[1:]

@@ -4,7 +4,7 @@ from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.client import Client
 from pyrogram.handlers.message_handler import MessageHandler
 
-from Main import Config, apps
+from Main import Config, all_apps
 from Main.core.types.message import Message
 from Main.core.helpers.misc_helpers import is_present
 from Main.core.helpers.logging_helper import (
@@ -12,7 +12,7 @@ from Main.core.helpers.logging_helper import (
     )
 
 def add_app_handler(filters_, function_, name):
-    for app in apps:
+    for app in all_apps:
         app.add_handler(
             MessageHandler(
                 function_,
@@ -21,7 +21,7 @@ def add_app_handler(filters_, function_, name):
             group = 0
         )
 
-    _info(f"Added {name}", append = "    ")
+    _info(f"Added {name}", "        ")
 
 def on_command(
         command: list = ["example"],
@@ -44,7 +44,7 @@ def on_command(
                     await message.initialise_attributes()
                     await func(client, message)
                 else:
-                    _warn(f"Can't fulfill this request, as the [chat](https://t.me/c/{message.chat.id}/{message.id} contains \"#NoUB\" in its title and doesn't allow the use of userbots.")
+                    _warn(f"Can't fulfill this request, as the [chat](https://t.me/c/{message.chat.id}/{message.id}) contains \"#NoUB\" in its title and doesn't allow the use of userbots.")
 
             except StopPropagation:
                 raise StopPropagation
@@ -58,26 +58,14 @@ def on_command(
             except BaseException as e1:
                 try:
                     await message.edit("Something went wrong, check logs.")
-
-                    traceback = format_exc().replace("\n", "\n    ")
-
                     _exception(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e1}"
                     )
-                    _exception(
-                        traceback, silence = not Config.DEBUG
-                    )
                 except BaseException as e2:
-                    traceback = format_exc().replace("\n", "\n    ")
-
                     _error("An exception occured while handling of another exception: ")
 
                     _exception(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e2} during {e1}"
-                    )
-
-                    _exception(
-                        traceback, silence = not Config.DEBUG
                     )
 
         add_app_handler(base_filters, wrapper, func.__name__)

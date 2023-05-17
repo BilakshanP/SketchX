@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 from Main.core.helpers.regex_helper import str_to_dict
+from Main.core.helpers .misc_helpers import set_to_empty
 from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
 
 _env_helper._load_dotenv()
@@ -42,10 +43,13 @@ class Config:
 
     START_UP_TEXT: str = get_env("START_UP_TEXT", False, "Bot has started!") # type: ignore
 
-    SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
-
     SESSION_STRINGS: list[str] = get_env("SESSION_STRINGS", False, "").split(' ') # type: ignore
     BOT_TOKENS: list[str] = get_env("BOT_TOKENS", False, "").split(' ') # type: ignore
+    
+    SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
+
+    MAIN_PLUGIN_NO_LOAD_APP: list[str] = get_env("MAIN_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    MAIN_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MAIN_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
 
     PLUGIN_NO_LOAD_APP: list[str] = get_env("PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
     PLUGIN_NO_LOAD_BOT: list[str] = get_env("PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
@@ -66,11 +70,17 @@ class Config:
 
     # Conditional Statements and Fallbacks
 
-    if SESSION_STRINGS == ['']:
-        SESSION_STRINGS = []
+    SESSION_STRINGS = set_to_empty(SESSION_STRINGS)
+    BOT_TOKENS = set_to_empty(BOT_TOKENS)
 
-    if BOT_TOKENS == ['']:
-        BOT_TOKENS = []
+    MAIN_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_PLUGIN_NO_LOAD_APP)
+    MAIN_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_PLUGIN_NO_LOAD_BOT)
+    PLUGIN_NO_LOAD_APP = set_to_empty(PLUGIN_NO_LOAD_APP)
+    PLUGIN_NO_LOAD_BOT = set_to_empty(PLUGIN_NO_LOAD_BOT)
+    CUSTOM_DIRECTORIES = set_to_empty(CUSTOM_DIRECTORIES)
+
+    ALL_PLUGIN_NO_LOAD_APP = MAIN_PLUGIN_NO_LOAD_APP + PLUGIN_NO_LOAD_APP
+    ALL_PLUGIN_NO_LOAD_BOT = MAIN_PLUGIN_NO_LOAD_BOT + PLUGIN_NO_LOAD_BOT
 
     # Compounds:
 

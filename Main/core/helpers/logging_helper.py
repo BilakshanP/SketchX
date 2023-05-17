@@ -1,7 +1,8 @@
 import pytz
 
-from datetime import datetime as _datetime
 from os import path, mkdir, getenv
+from traceback import format_exc
+from datetime import datetime as _datetime
 from dotenv import load_dotenv as _load_dotenv
 
 _load_dotenv()
@@ -11,11 +12,8 @@ _tz = pytz.timezone(getenv("TIME_ZONE", "Asia/Kolkata"))
 def time() -> str:
     return _datetime.now(_tz).strftime('%a %b %d %H:%M:%S %Y')
 
-
-directory: str = "Logs/"
-
-if not path.exists(directory):
-    mkdir(directory)
+if not path.exists("Logs/"):
+    mkdir("Logs/")
 
 
 def generic_logger(
@@ -47,11 +45,12 @@ def warn(message: str, append: str = "", new_line: bool = True, silence: bool = 
 def error(message: str, append: str = "", new_line: bool = True, silence: bool = False):
     generic_logger(message, "ERROR", "-", True, append, new_line, silence)
 
-def exception(message: str, append: str = "", new_line: bool = True, silence: bool = False):
-    generic_logger(message, "EXCEPTION", "#", True, append, new_line, silence)
-
 def debug(message: str, append: str = "", new_line: bool = True, silence: bool = False):
     generic_logger(message, "DEBUG", "~", True, append, new_line, silence)
+
+def exception(message: str, append: str = "", new_line: bool = True, silence: bool = False):
+    traceback = append + "     " + format_exc().replace("\n", "\n" + append + "     ")
+    generic_logger(message + "\n" + traceback, "EXCEPTION", "#", True, append, new_line, silence)
 
 def empty():
     print()

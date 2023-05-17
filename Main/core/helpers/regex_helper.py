@@ -6,7 +6,7 @@ class Compiled:
     config_dict_match_1: re.Pattern = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*") # matches (var, val), ... you can add ,* and \s*
     config_dict_match_2: re.Pattern = re.compile(r"[a-zA-Z_]\w*\s*:\s*.*?;") # matches var:val; ... you can add ;* and \s*
 
-    command_match: re.Pattern = re.compile(r"\.\w+\s(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
+    command_match: re.Pattern = re.compile(r"\.\w+\s+(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
     command_match_args: re.Pattern = re.compile(r"(?<=-)\w(?!\w)")
     compile_match_kwargs: re.Pattern = re.compile(r"--(\w{2,})\s?=\s?(\w+)")
 

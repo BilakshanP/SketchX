@@ -67,11 +67,3 @@ async def restart(client: Client, message: Message):
 
     args: list[str] = [executable, "-m", "Main"]
     execle(executable, *args, environ)
-
-"""
- "\n\n" +
-            f"Replied Message ID: {message.reply_to_message.id}\n" +
-            f"Replied User ID: {message.reply_to_message.from_user.id}\n" +
-            f"Replied User DC ID: {message.reply_to_message.from_user.dc_id}\n"
-        ) if message.reply_to_message else ""
-"""

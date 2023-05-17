@@ -41,8 +41,12 @@ def on_command(
             _debug(f"Called {func.__name__}")
 
             try:
-                await message.initialise_attributes()
-                await func(client, message)
+                if not "#NoUB" in message.chat.title:
+                    await message.initialise_attributes()
+                    await func(client, message)
+                else:
+                    _warn(f"Can't fulfill this request, as the [chat](https://t.me/c/{message.chat.id}/{message.id} contains \"#NoUB\" in its title and doesn't allow the use of userbots.")
+
             except StopPropagation:
                 raise StopPropagation
             except ContinuePropagation:

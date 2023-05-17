@@ -7,7 +7,7 @@ from Main import Config
 from Main.core.helpers.logging_helper import (
     info as _info, error as _error, warn as _warn, exception as _exception, empty as _empty
 )
-            
+
 def load_all_plugins(file: str):
     """
     Pass __file__ to the argument.
@@ -42,7 +42,7 @@ async def run_all_clients(clients: tuple[list[Client], list[Client]]):
             try:
                 await app_or_bot.start()
                 _info(f"Started [{name}]: {index + 1}/{length}", "    ")
-            
+
             except BaseException as e:
                 _exception(str(e))
 
@@ -51,7 +51,7 @@ async def run_all_clients(clients: tuple[list[Client], list[Client]]):
                 else:
                     _error(f"Couldn't start main [{name}]. Exitting...", "    ")
                     quit()
-        
+
         _info(f"Started all {name.lower()}s")
-    
+
     _empty()

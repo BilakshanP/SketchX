@@ -39,7 +39,7 @@ async def id(client: Client, message: Message):
                 f"Replied User DC ID: `{message.reply_to_message.from_user.dc_id}`" # or message.sender_chat.dc_id}`"
             ]
         )
-    
+
     # To be fixed
     #
     # if message.forward_from_chat:

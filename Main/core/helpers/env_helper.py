@@ -27,7 +27,7 @@ def get_env_or_default(env: str, is_essential: bool = True, default = None, sile
             _error(f"Environment variable '{env} couldn't be found. Exitting...")
 
         quit()
-    
+
     _warn(f"Environment variable '{env}' couldn't be found. Skipping...", silence = silence)
     return default
 
@@ -41,10 +41,10 @@ def get_env_int_or_None(env: str, is_essential: bool = True, silence: bool = Fal
         if value.isnumeric():
             _info(f"Environment variable '{env}' found.", silence = silence)
             return int(value)
-        
+
         _warn(f"Environment variable '{env}' isn't numeric. Skipping...", silence = silence)
         return None
-    
+
     if is_essential:
         _error(f"Environment variable '{env} couldn't be found. Exitting...", silence = silence)
         quit()
@@ -56,9 +56,9 @@ def get_env_bool_or_default(env: str, is_essential: bool = True, default: bool =
     if env_value := _getenv(env):
         _info(f"Environment variable '{env}' found.", silence = silence)
         return env_value == "True"
-    
+
     if is_essential:
        _error(f"Environment variable '{env}' couldn't be found. Exitting...", silence = silence)
        exit()
-    
+
     return default

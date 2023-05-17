@@ -9,6 +9,6 @@ async def paste(text: str) -> str|None:
                 }
                 ) as response:
                 return f"https://nekobin.com/{(await response.json())['result']['key']}"
-    
+
     except:
         return None

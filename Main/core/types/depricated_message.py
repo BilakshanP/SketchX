@@ -29,7 +29,7 @@ async def edit(
             _exception(
                     traceback, silence = not Config.DEBUG
                 )
-            
+
             await message.edit(f"Text too long! Trying to send it as a file.")
 
             msg: Optional[Message] = await client.send_document(
@@ -38,10 +38,10 @@ async def edit(
                             text.replace("\\n", "\n").replace("\\\"", "\"").strip("`").encode()
                     ), 
                 )
-        
+
             if msg:
                 return await message.edit(f"Command [result](https://t.me/c/{message.chat.id}/{msg.id}).")
-        
+
             else:
                 return await message.edit(f"Couldn't send the file! Try again or check your permissions.")
 

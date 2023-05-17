@@ -28,7 +28,7 @@ def load_clients() -> tuple[list[Client], list[Client]]:
                 )
 
                 _info(f"Loaded [{name.upper()}]: {index + 1}/{length}")
-            
+
             except BaseException as e:
                 _exception(str(e))
 
@@ -44,5 +44,5 @@ def configure_directories():
     for directory in ["Logs"] + Config.CUSTOM_DIRECTORIES:
         if not path.exists(directory):
             mkdir(directory)
-    
+
     _info("Directory configuration completed.")

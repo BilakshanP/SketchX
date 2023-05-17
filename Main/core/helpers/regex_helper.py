@@ -22,7 +22,7 @@ def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
         matches: list[str] = Compiled.config_dict_match_2.findall(text)
     else:
         matches: list[str] = Compiled.config_dict_match_1.findall(text)
-    
+
     keys: list[str] = []
     values: list[str] = []
 
@@ -31,9 +31,9 @@ def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
             key_and_val = match.strip(";").split(":", 1)
         else:
             key_and_val = match.strip(",")[1:-1].split(",", 1)
-        
+
         keys.append(key_and_val[0].strip())
         values.append(key_and_val[1].strip())
-    
+
     return dict(zip(keys, values))
 

@@ -63,10 +63,10 @@ class Config:
                                         )
 
     # Conditional Statements and Fallbacks
-    
+
     if SESSION_STRINGS == ['']:
         SESSION_STRINGS = []
-    
+
     if BOT_TOKENS == ['']:
         BOT_TOKENS = []
 

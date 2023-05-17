@@ -33,7 +33,7 @@ def generic_logger(
 
         with open(file_name, "a") as file:
             file.write(text)
-        
+
         with open("Logs/logs.log", "a") as file:
             file.write(text)
 

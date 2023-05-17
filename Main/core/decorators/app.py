@@ -76,7 +76,7 @@ def on_command(
                     _exception(
                         traceback, silence = not Config.DEBUG
                     )
-        
+
         add_app_handler(base_filters, wrapper, func.__name__)
         return wrapper
     return decorator

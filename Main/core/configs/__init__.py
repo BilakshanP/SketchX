@@ -48,11 +48,17 @@ class Config:
     
     SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
 
-    MAIN_PLUGIN_NO_LOAD_APP: list[str] = get_env("MAIN_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
-    MAIN_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MAIN_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    MAIN_MODULE_PLUGIN_NO_LOAD_APP: list[str] = get_env("MAIN_MODULE_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    MAIN_MODULE_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MAIN_MODULE_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
 
-    PLUGIN_NO_LOAD_APP: list[str] = get_env("PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
-    PLUGIN_NO_LOAD_BOT: list[str] = get_env("PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
+    MODULE_PLUGIN_NO_LOAD_APP: list[str] = get_env("MODULE_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    MODULE_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MODULE_PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
+
+    MAIN_FUNC_PLUGIN_NO_LOAD_APP: list[str] = get_env("MAIN_FUNC_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    MAIN_FUNC_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MAIN_FUNC_PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
+
+    FUNC_PLUGIN_NO_LOAD_APP: list[str] = get_env("FUNC_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
+    FUNC_PLUGIN_NO_LOAD_BOT: list[str] = get_env("FUNC_PLUGIN_NO_LOAD_BOT", False, "").split(' ') # type: ignore
 
     # For developers
 
@@ -73,19 +79,27 @@ class Config:
     SESSION_STRINGS = set_to_empty(SESSION_STRINGS)
     BOT_TOKENS = set_to_empty(BOT_TOKENS)
 
-    MAIN_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_PLUGIN_NO_LOAD_APP)
-    MAIN_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_PLUGIN_NO_LOAD_BOT)
-    PLUGIN_NO_LOAD_APP = set_to_empty(PLUGIN_NO_LOAD_APP)
-    PLUGIN_NO_LOAD_BOT = set_to_empty(PLUGIN_NO_LOAD_BOT)
-    CUSTOM_DIRECTORIES = set_to_empty(CUSTOM_DIRECTORIES)
+    MAIN_MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_APP)
+    MAIN_MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_BOT)
+    MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MODULE_PLUGIN_NO_LOAD_APP)
+    MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MODULE_PLUGIN_NO_LOAD_BOT)
+    MAIN_FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_APP)
+    MAIN_FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_BOT)
+    FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(FUNC_PLUGIN_NO_LOAD_APP)
+    FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(FUNC_PLUGIN_NO_LOAD_BOT)
 
-    ALL_PLUGIN_NO_LOAD_APP = MAIN_PLUGIN_NO_LOAD_APP + PLUGIN_NO_LOAD_APP
-    ALL_PLUGIN_NO_LOAD_BOT = MAIN_PLUGIN_NO_LOAD_BOT + PLUGIN_NO_LOAD_BOT
+    CUSTOM_DIRECTORIES = set_to_empty(CUSTOM_DIRECTORIES)
 
     # Compounds:
 
     ALL_SESSION_STRINGS: list[str] = [MAIN_SESSION] + SESSION_STRINGS # type: ignore
     ALL_BOT_TOKENS: list[str] = [MAIN_BOT_TOKEN] + BOT_TOKENS # type: ignore
+
+    ALL_MODULE_PLUGIN_NO_LOAD_APP = MAIN_MODULE_PLUGIN_NO_LOAD_APP + MODULE_PLUGIN_NO_LOAD_APP
+    ALL_MODULE_PLUGIN_NO_LOAD_BOT = MAIN_MODULE_PLUGIN_NO_LOAD_BOT + MODULE_PLUGIN_NO_LOAD_BOT
+
+    ALL_FUNC_PLUGIN_NO_LOAD_APP = MAIN_FUNC_PLUGIN_NO_LOAD_APP + FUNC_PLUGIN_NO_LOAD_APP
+    ALL_FUNC_PLUGIN_NO_LOAD_BOT = MAIN_FUNC_PLUGIN_NO_LOAD_BOT + FUNC_PLUGIN_NO_LOAD_BOT
 
     # Post Start-Up Variables:
 

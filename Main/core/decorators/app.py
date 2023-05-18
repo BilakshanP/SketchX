@@ -2,66 +2,26 @@ from traceback import format_exc
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.client import Client
-from pyrogram.handlers.message_handler import MessageHandler
 
 from Main import Config, all_apps, main_app
 from Main.core.types.message import Message
 from Main.core.helpers.misc_helpers import is_present
+from Main.core.helpers.handler_helper import add_app_handler
 from Main.core.helpers.logging_helper import (
-        info as _info, error as _error, warn as _warn, exception as _exception, debug as _debug
+        error as _error, warn as _warn, exception as _exception, debug as _debug
     )
 
-"""
-def add_app_handler(filters_, function_, name):
-    for app in all_apps:
-        app.add_handler(
-            MessageHandler(
-                function_,
-                filters_
-            ),
-            group = 0
-        )
-
-    _info(f"Added {name}", "        ")
-"""
-
-def add_app_handler(filters_, function_, name):
-    if name in Config.ALL_FUNC_PLUGIN_NO_LOAD_APP:
-        if name in Config.MAIN_FUNC_PLUGIN_NO_LOAD_APP:
-            _warn(f"Skipped [ALL APPS] {name}", "        ")
-        else:
-            main_app.add_handler(
-                MessageHandler(
-                    function_,
-                    filters_
-                ),
-                group = 0
-            )
-
-            _info(f"Added [MAIN APP]: {name}", "        ")
-    
-    else:
-        for app in all_apps:
-            app.add_handler(
-                MessageHandler(
-                    function_,
-                    filters_
-                ),
-                group = 0
-            )
-
-        _info(f"Added [ALL APPS]: {name}", "        ")
 
 def on_command(
         command: list = ["example"],
         command_help: dict = {
             "help": "This ia an example help.",
-            "example": f"{Config.COMMAND_HANDLER}example"
+            "example": f"{Config.COMMAND_HANLDER_APP}example"
         },
         admin_only: bool = False
 ):
     base_filters = (
-        filters.outgoing & filters.text & filters.command(command, Config.COMMAND_HANDLER)
+        filters.outgoing & filters.text & filters.command(command, Config.COMMAND_HANLDER_APP)
     )
 
     def decorator(func):

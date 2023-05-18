@@ -1,6 +1,6 @@
 <h1 align="center">
     <b>
-        SketchX | UserBot
+        >_ | SketchX
     </b>
 </h1>
 

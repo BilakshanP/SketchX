@@ -48,6 +48,7 @@ class Config:
     BOT_TOKENS: list[str] = get_env("BOT_TOKENS", False, "").split(' ') # type: ignore
     
     SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
+    DISABLE_SUDO_USERS: bool = get_env_bool("DISABLE_SUDO_USERS", False, False)
 
     MAIN_MODULE_PLUGIN_NO_LOAD_APP: list[str] = get_env("MAIN_MODULE_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore
     MAIN_MODULE_PLUGIN_NO_LOAD_BOT: list[str] = get_env("MAIN_MODULE_PLUGIN_NO_LOAD_APP", False, "").split(' ') # type: ignore

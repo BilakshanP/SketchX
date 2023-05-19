@@ -5,6 +5,7 @@ from pyrogram.client import Client
 
 from Main import Config, all_apps, main_app
 from Main.core.types.message import Message
+from Main.core.filters import sudo_filter
 from Main.core.helpers.misc_helpers import is_present
 from Main.core.helpers.handler_helper import add_app_handler
 from Main.core.helpers.logging_helper import (
@@ -21,7 +22,11 @@ def on_command(
         admin_only: bool = False
 ):
     base_filters = (
-        filters.outgoing & filters.text & filters.command(command, Config.COMMAND_HANLDER_APP)
+        (filters.me | sudo_filter) &
+        filters.command(command, Config.COMMAND_HANLDER_APP) & ~ 
+        (
+            filters.via_bot | filters.forwarded
+        )
     )
 
     def decorator(func):
@@ -39,11 +44,6 @@ def on_command(
                 raise StopPropagation
             except ContinuePropagation:
                 raise ContinuePropagation
-            #except MessageTooLong:
-            #    try:
-            #        await message.edit(await _paste("what"))
-            #    except:
-            #        print(await _paste("what"))
             except BaseException as e1:
                 try:
                     await message.edit("Something went wrong, check logs.")

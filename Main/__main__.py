@@ -6,7 +6,7 @@ from contextlib import closing, suppress
 from pyrogram.sync import idle
 
 from Main import clients, main_loop, aiohttp_session
-from Main.core.startup.post_startup import load_all_local_plugins, run_all_clients
+from Main.core.startup import load_all_local_plugins, run_all_clients
 from Main.core.shutdown.shutdown import close_all_clients
 
 load_all_local_plugins(__file__)

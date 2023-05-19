@@ -21,8 +21,8 @@ if Config.DEBUG:
         text = "\n".join(
             [
                 f"Message ID: `{message.id}`",
-                f"Your ID: `{message.from_user.id}`",
-                f"Your DC ID: `{message.from_user.dc_id}`\n",
+                (f"Your ID: `{message.from_user.id}`" if message.from_user else f"Channel/Group ID: `{message.sender_chat.id}`"),
+                (f"Your DC ID: `{message.from_user.dc_id}`\n" if message.from_user else f"Channel/Group ID: `{message.sender_chat.id}`"),
                 f"Chat ID: `{message.chat.id}`",
                 f"Chat DC ID: `{message.chat.dc_id}`"
             ]

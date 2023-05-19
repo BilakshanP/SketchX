@@ -1,7 +1,7 @@
 from os import path, mkdir
-from pyrogram.client import Client
 
 from Main import Config
+from Main.core.types.client import Client
 from Main.core.helpers.logging_helper import (
         info as _info, error as _error, warn as _warn, exception as _exception, empty as _empty
     )

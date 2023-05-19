@@ -1,6 +1,6 @@
 from pyrogram.types import Message as _Message
 
-from Main.core.decorators.others import monkeypatch
+from Main.core.decorators.patches import monkeypatch
 from Main.core.helpers.type_helper import MessageHelper
 
 

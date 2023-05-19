@@ -75,6 +75,8 @@ class Config:
                                             CUSTOM_CONFIGS_FORMAT
                                         )
 
+    FAST_LOAD: bool = get_env_bool("FAST_LOAD", False, True)
+
     # Conditional Statements and Fallbacks
 
     SESSION_STRINGS = set_to_empty(SESSION_STRINGS)

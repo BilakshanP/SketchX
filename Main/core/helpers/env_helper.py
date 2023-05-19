@@ -38,7 +38,7 @@ def get_env_int_or_None(env: str, is_essential: bool = True, silence: bool = Fal
     value: str|None = get_env_or_default(env, False, silence = True)
 
     if value:
-        if value.isnumeric():
+        if value.isnumeric() or (value[0] == "-" and value[1:].isnumeric()):
             _info(f"Environment variable '{env}' found.", silence = silence)
             return int(value)
 

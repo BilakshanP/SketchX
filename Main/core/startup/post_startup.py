@@ -1,11 +1,11 @@
 import os
 
-from traceback import format_exc
 from importlib import import_module
 
 from pyrogram.client import Client
 
 from Main import Config
+from Main.core.types.client import Client
 from Main.core.helpers.logging_helper import (
     info as _info, warn as _warn, error as _error, exception as _exception, empty as _empty
 )
@@ -55,6 +55,8 @@ async def run_all_clients(clients: tuple[list[Client], list[Client]]):
 
             try:
                 await app_or_bot.start()
+                await app_or_bot.initialise_attributes(index, name.lower())
+
                 _info(f"Started [{name}]: {index + 1}/{length}", "        ")
 
             except BaseException as e:

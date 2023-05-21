@@ -4,10 +4,15 @@ from time import sleep
 
 from Main import Config
 from Main.core.decorators import app
-from Main.core.types.client import Client
-from Main.core.types.message import Message
+from Main.core.types import Client, Message
 
-@app.on_command(["restart"])
+@app.on_command(
+        "restart",
+        {
+            "help": "Restarts the whole app.",
+            "example": "restart"
+        }
+    )
 async def restart(client: Client, message: Message):
     await message.edit("Restarting...")
 

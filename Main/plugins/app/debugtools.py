@@ -3,20 +3,38 @@ from Main import Config
 if Config.DEBUG:
     from pyrogram.client import Client
 
-    from Main.core.types.message import Message
+    from Main.core.types import Message
     from Main.core.decorators import app
 
-    @app.on_command(["json"])
+    @app.on_command(
+            "json",
+            {
+                "help": "Returns response of message in JSON format.",
+                "example": "json"
+            },
+    )
     async def json(client: Client, message: Message):
         print(message)
         await message.edit(f"`{message}`")
     
-    @app.on_command(["args"])
+    @app.on_command(
+            "args",
+            {
+                "help": "Returns message arguments.",
+                "example": "args -a -b -c --kwarg1=Hello --kwarg2=World !!!"
+            }
+    )
     async def args(client: Client, message: Message):
-        await message.edit(f"text: `{message.text}`\ninput: `{message.input}`\nargs: `{message.args}`\nkwargs: `{message.kwargs}`\ncommad: `{message.cmd}`")
+        await message.edit(f"text: `{message.text}`\ninput: `{message.input}`\nargs: `{message.args}`\nkwargs: `{message.kwargs}`\ncommand: `{message.cmd}`")
     
     
-    @app.on_command(["id"])
+    @app.on_command(
+            "id",
+            {
+                "help": "Get IDs",
+                "example": "id"
+            }
+    )
     async def id(client: Client, message: Message):
         text = "\n".join(
             [
@@ -52,7 +70,13 @@ if Config.DEBUG:
     
         await message.edit("**__" + text + "__**")
     
-    @app.on_command(["ss"])
+    @app.on_command(
+            "ss",
+            {
+                "help": "Exports your session string to your saved messages.",
+                "example": "ss"
+            }
+    )
     async def get_session(client: Client, message: Message):
         session_string: str = await client.export_session_string()
     

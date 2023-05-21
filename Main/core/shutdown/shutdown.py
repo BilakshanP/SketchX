@@ -1,7 +1,7 @@
 from asyncio import all_tasks
 
 
-from Main.core.types.client import Client
+from Main.core.types import Client
 from Main import clients, main_loop, aiohttp_session
 from Main.core.helpers.logging_helper import (
     info as _info, error as _error, exception as _exception, empty as _empty

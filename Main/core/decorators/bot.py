@@ -1,10 +1,9 @@
-from traceback import format_exc
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
 from pyrogram.client import Client
 
 from Main import Config
-from Main.core.types.message import Message
+from Main.core.types import Message
 from Main.core.helpers.handler_helper import add_bot_handler
 from Main.core.helpers.logging_helper import (
         error as _error, warn as _warn, exception as _exception, debug as _debug
@@ -53,6 +52,6 @@ def on_command(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e2} during {e1}"
                     )
 
-        add_bot_handler(base_filters, wrapper, func.__name__)
+        add_bot_handler(wrapper, base_filters, func.__name__)
         return wrapper
     return decorator

@@ -5,7 +5,7 @@ from importlib import import_module
 from pyrogram.client import Client
 
 from Main import Config
-from Main.core.types.client import Client
+from Main.core.types import Client
 from Main.core.helpers.logging_helper import (
     info as _info, warn as _warn, error as _error, exception as _exception, empty as _empty
 )

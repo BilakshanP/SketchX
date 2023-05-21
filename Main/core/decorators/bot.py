@@ -4,7 +4,6 @@ from typing import Union
 from pyrogram import filters, StopPropagation, ContinuePropagation
 
 from Main import Config, Menu
-from Main.core.filters import sudo_filter
 from Main.core.types import Client, Message
 from Main.core.types.module import Arg, Kwarg, Argument, Command, Help
 from Main.core.helpers.handler_helper import add_bot_handler

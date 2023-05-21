@@ -1,87 +1,34 @@
-#from Main import ClientData
-#
-#from Main.core.decorators import app
-#from Main.core.types import Client, Message
-#
-#@app.on_command(
-#    "help",
-#    {
-#        "help": "retrieves help about a command/module/function",
-#        "example": "help"
-#    },
-#    {
-#        "args": {
-#            
-#            "m": {
-#                "usage": "get module info (default behaviour)",
-#                "example": "help -m <module name>",
-#            },
-#            "c": {
-#                "usage": "get command info",
-#                "example": "help -c <command name>",
-#            },
-#            "f": {
-#                "usage": "get function info",
-#                "example": "help -f <function name>",
-#            },
-#        }
-#    },
-#    False,
-#    requires_input_if_arguments = True
-#)
-#async def help(client: Client, message: Message):
-#    print(1)
-#    if message.args:
-#        print(2, message.args)
-#        match message.args[0]:
-#            case "m":
-#                if module_info := ClientData.app_help_menu.get(message.input):
-#                    # result: list[str] = []
-#                    # for num, command in enumerate(module_info):
-#                    #     result.append(
-#                    #         f"{num + 1}. {command[0]}:" +
-#                    #         f"Aliases: {command[1]['aliases']}" if command[1]
-#                    #     )
-#                    # 
-#
-#                    result: list[str] = [f"Module name: {message.input}"]
-#
-#                    for num, command in enumerate(module_info):
-#                        result.append(
-#                            f"{num + 1}. {command[0]}" +
-#                            ((f"Aliases: " + ", ".join(x)) if (x := command[1]['aliases']) else "") + "\n"
-#                            f"Help: {(help := command[1]['command_help'])['help']}\n" +
-#                            f"Example: {help['example']}\n" +
-#                            f"todo"
-#                        )
-#                    
-#                    return await message.edit("\n".join(result))
-#
-#                
-#                return message.edit(f"Module `{message.input}` not found.")
-#
-#            case "c":
-#                await message.edit("todo c")
-#
-#            case "f":
-#                await message.edit("todo f")
-#    
-#            case _:
-#                pass
-#    
-#    
-#
-#    #if module_info := ClientData.app_help_menu.get(message.input):
-#    #    print(message.args)
-#    #    match message.args:
-#    #        case "m":
-#    #            format: list[str] = []
-#    #            for num, command_info in enumerate(module_info):
-#    #                format.append(
-#    #                    f"{num+1}. {command_info[0]}: {command_info[1]}"
-#    #                )
-#    #
-#    #                await message.edit("\n".join(format))
-#    #                
-#    #        case _:
-#    #            await message.edit("todo")
+from Main.core.data import HelpMenu
+from Main.core.types import Client, Message
+
+from Main.core.decorators import app
+
+@app.on_command("h", "", "")
+async def help_help(client: Client, message: Message):
+    if menu := HelpMenu.app_help_menu.get(message.input):
+        text = f"**Module**: `{menu.module_name}` by __{menu.module_author}__\n" + "\n".join(
+            [
+                (
+                    f"{n + 1}. {menu.functions[n]}: {i.name}\n" +
+                    f"Aliases: {str(aliases)[1:-1]}" if (aliases := i.aliases) else ""
+                ) for n, i in enumerate(menu.commands)
+            ]
+        )
+        
+        await message.edit(text)
+
+@app.on_command("help", "get help", "help")
+async def help(client: Client, message: Message):
+    if menu := HelpMenu.app_help_menu.get((input := message.input)):
+        text = f"**Module**: `{menu.module_name}` by {menu.module_author}\n"
+        if menu.count == 0:
+            await message.edit(text + "\nContains no registered commands/functions.")
+        else:
+            for n, i in enumerate(menu.commands):
+                text += f"{n + 1}. {i.name} in {menu.functions[n]}\n"
+                if (aliases := i.aliases):
+                    text += f"Aliases {str(aliases)[1:-1]}\n"
+            
+            await message.edit(text)
+    else:
+        await message.edit(f"Module `{input}` not found.")

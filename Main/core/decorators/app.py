@@ -3,9 +3,10 @@ from typing import Union
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
 
-from Main import Config
+from Main import Config, Menu
 from Main.core.filters import sudo_filter
 from Main.core.types import Client, Message
+from Main.core.types.module import Arg, Kwarg, Argument, Command, Help
 from Main.core.helpers.misc_helpers import is_present
 from Main.core.helpers.handler_helper import add_app_handler
 #from Main.core.helpers.module_helpers.help_menu_helper import add_to_app_help_menu
@@ -16,11 +17,13 @@ from Main.core.helpers.logging_helper import (
 
 def on_command(
         command: Union[str, list[str]],
-        command_help: dict[str, str],
+        help: str,
+        example: str,
 
-        arguments: dict[str, dict[str, dict[str, str]]]|None = None,
+        args: list[Arg] = [],
+        kwargs: list[Kwarg] = [],
 
-        allow_multiple_args: bool|None = None,
+        multiple_args: bool = False,
 
         admin_only: bool = False,
         group_only: bool = False,
@@ -84,7 +87,7 @@ def on_command(
                     and message.reply_to_message.sender_chat.id
                 ):
                     return await message.edit(f"A channel can't execute {cmd} command.")
-                if not allow_multiple_args and len(message.args) > 1:
+                if not multiple_args and len(message.args) > 1:
                     return await message.edit(f"Command {cmd} doesn't allow multiple arguments.")
 
                 try:
@@ -125,6 +128,14 @@ def on_command(
                 _warn(f"Can't fulfill this request, as the [chat](https://t.me/c/{message.chat.id}/{message.id}) contains \"#NoUB\" in its title and doesn't allow the use of userbots.")
 
         add_app_handler(wrapper, base_filters, func.__name__, group)
+        Menu.add_app_command(
+            Command(command, Argument(args, kwargs), Help(help, example), multiple_args,
+                    admin_only, group_only, channel_only, private_only,
+                    requires_input, requires_reply, requires_input_if_arguments, requires_reply_if_arguments),
+            func.__module__.split(".")[-1], func.__name__,
+            "@Redditard"
+        )
+
         #add_to_app_help_menu(command, command_help, arguments, allow_multiple_args, admin_only, group_only, channel_only, private_only, requires_input, requires_reply, requires_arguments, requires_input_if_arguments, requires_input_if_arguments, func.__module__)
         return wrapper
     return decorator

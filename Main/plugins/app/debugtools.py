@@ -8,10 +8,8 @@ if Config.DEBUG:
 
     @app.on_command(
             "json",
-            {
-                "help": "Returns response of message in JSON format.",
-                "example": "json"
-            },
+            "Extracts JSON info of a pyorogram.types.Message object.",
+            "json <reply to message>*"
     )
     async def json(client: Client, message: Message):
         print(message)
@@ -19,10 +17,8 @@ if Config.DEBUG:
     
     @app.on_command(
             "args",
-            {
-                "help": "Returns message arguments.",
-                "example": "args -a -b -c --kwarg1=Hello --kwarg2=World !!!"
-            }
+            "Returns message arguments.",
+            "args -a -b -c --kwarg1=Hello --kwarg2=World !!!"
     )
     async def args(client: Client, message: Message):
         await message.edit(f"text: `{message.text}`\ninput: `{message.input}`\nargs: `{message.args}`\nkwargs: `{message.kwargs}`\ncommand: `{message.cmd}`")
@@ -30,10 +26,8 @@ if Config.DEBUG:
     
     @app.on_command(
             "id",
-            {
-                "help": "Get IDs",
-                "example": "id"
-            }
+            "Get IDs.",
+            "id"
     )
     async def id(client: Client, message: Message):
         text = "\n".join(
@@ -72,10 +66,8 @@ if Config.DEBUG:
     
     @app.on_command(
             "ss",
-            {
-                "help": "Exports your session string to your saved messages.",
-                "example": "ss"
-            }
+            "Exports your session string to your saved messages.",
+            "ss"
     )
     async def get_session(client: Client, message: Message):
         session_string: str = await client.export_session_string()

@@ -2,7 +2,7 @@ from asyncio import get_event_loop
 from aiohttp import ClientSession as _ClientSession
 
 from Main.core.configs import Config
-from Main.core.data import ClientData
+#from Main.core.data import ClientData
 from Main.core.types import Client
 from Main.core.startup import load_clients
 

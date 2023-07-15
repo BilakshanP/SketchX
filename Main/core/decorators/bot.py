@@ -11,7 +11,6 @@ from Main.core.helpers.logging_helper import (
         error as _error, warn as _warn, exception as _exception, debug as _debug
     )
 
-
 def on_command(
         command: Union[str, list[str]],
         help: str,

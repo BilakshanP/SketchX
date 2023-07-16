@@ -7,7 +7,7 @@ from Main import Config, Menu
 from Main.core.filters import sudo_filter
 from Main.core.types import Client, Message
 from Main.core.types.module import Arg, Kwarg, Argument, Command, Help
-from Main.core.helpers.misc_helpers import is_present
+from Main.core.helpers.misc_helper import is_present
 from Main.core.helpers.handler_helper import add_app_handler
 #from Main.core.helpers.module_helpers.help_menu_helper import add_to_app_help_menu
 from Main.core.helpers.logging_helper import (

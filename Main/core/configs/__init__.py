@@ -3,7 +3,7 @@ import re
 from typing import Optional
 
 from Main.core.helpers.regex_helper import str_to_dict
-from Main.core.helpers .misc_helpers import set_to_empty
+from Main.core.helpers.misc_helper import set_to_empty
 from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
 
 _env_helper._load_dotenv()

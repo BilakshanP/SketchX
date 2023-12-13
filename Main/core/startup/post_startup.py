@@ -12,7 +12,7 @@ from Main.core.helpers.logging_helper import (
 
 def load_all_local_plugins(file: str):
     """
-    Pass `__file__` to the it from `__main__.py` file.
+    Pass `__file__` to it from the `__main__.py` file.
     """
     for i in ["app", "bot"]:
         _empty()

@@ -11,7 +11,7 @@ def on_command(
         command: Union[str, list[str]] = ["example"],
         command_help: dict[str, str] = {
             "help": "This is an example help.",
-            "example": f"{Config.COMMAND_HANLDER_APP}example"
+            "example": f"{Config.COMMAND_HANDLER_APP}example"
         },
 
         arguments: dict[str, dict[str, dict[str, str]]]|None = {

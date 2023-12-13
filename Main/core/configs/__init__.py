@@ -32,8 +32,8 @@ class Config:
 
     MAIN_SESSION: Optional[str] = get_env("MAIN_SESSION") 
 
-    COMMAND_HANLDER_APP: str = get_env("COMMAND_HANLDER_APP", False, ".") # type: ignore
-    COMMAND_HANLDER_BOT: str = get_env("COMMAND_HANLDER_BOT", False, "!") # type: ignore
+    COMMAND_HANDLER_APP: str = get_env("COMMAND_HANDLER_APP", False, ".") # type: ignore
+    COMMAND_HANDLER_BOT: str = get_env("COMMAND_HANDLER_BOT", False, "!") # type: ignore
 
     TIME_ZONE: Optional[str] = get_env("TIME_ZONE", False, "Asia/Kolkata")
 

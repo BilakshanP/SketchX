@@ -48,7 +48,7 @@ def on_command(
 
     base_filters = (
         (filters.me | sudo_filter) &
-        filters.command(command, Config.COMMAND_HANLDER_APP) & ~ 
+        filters.command(command, Config.COMMAND_HANDLER_APP) & ~ 
         (
             filters.via_bot | filters.forwarded
         )
@@ -61,7 +61,7 @@ def on_command(
             if Config.FORCE or not is_present("#NoUB", [message.chat.title, message.chat.first_name, message.chat.last_name]):
                 await message.initialise_attributes()
 
-                cmd: str = f"`{Config.COMMAND_HANLDER_APP}{message.cmd}`"
+                cmd: str = f"`{Config.COMMAND_HANDLER_APP}{message.cmd}`"
 
                 # if admin_only...
                 #

@@ -45,7 +45,7 @@ def on_command(
         command = [command]
     
     base_filters = (
-        filters.incoming & filters.text & filters.command(command, ["/", Config.COMMAND_HANLDER_BOT])
+        filters.incoming & filters.text & filters.command(command, ["/", Config.COMMAND_HANDLER_BOT])
     )
 
     def decorator(func):
@@ -54,7 +54,7 @@ def on_command(
     
             await message.initialise_attributes()
 
-            cmd: str = f"`{Config.COMMAND_HANLDER_BOT}{message.cmd}`"
+            cmd: str = f"`{Config.COMMAND_HANDLER_BOT}{message.cmd}`"
 
             # if admin_only...
 

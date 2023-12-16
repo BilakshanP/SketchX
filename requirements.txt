@@ -1,7 +1,11 @@
-pyrogram
-tgcrypto
-python-dotenv
-asyncio
-aiohttp
-uvloop
-pytz
+aiohttp             # for async http requests
+asyncio             # for async i/o
+pyrofork            # pyrogram's updated alternative
+# pyrogram
+python-dotenv       # used for reading .env files
+pytz                # time-zone setup
+tgcrypto            # required for faster connection
+uvloop              # for improved async networking
+vanilite            # for string localisation
+
+# serial: asyncio* > aiohttp > python-dotenv > pytz > tgcrypto* > pyrofork > uvloop > vanilite?

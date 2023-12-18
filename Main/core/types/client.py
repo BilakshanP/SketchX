@@ -31,10 +31,9 @@ class Client(_Client):
         else:
             self.my_info = await self.get_me()
             self.last_info_update_time = datetime.now()
-    
+
     async def get_client(self) -> User:
         self.my_info = await self.get_me()
         self.last_update_time = datetime.now()
 
         return self.my_info
-    

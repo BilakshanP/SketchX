@@ -46,7 +46,7 @@ class Config:
 
     SESSION_STRINGS: list[str] = get_env("SESSION_STRINGS", False, "").split(' ') # type: ignore
     BOT_TOKENS: list[str] = get_env("BOT_TOKENS", False, "").split(' ') # type: ignore
-    
+
     SUDO_USERS: list[int] = [int(i) for i in get_env("SUDO_USERS", False, "").split(' ') if i.isdigit()] # type: ignore
     DISABLE_SUDO_USERS: bool = get_env_bool("DISABLE_SUDO_USERS", False, False)
 

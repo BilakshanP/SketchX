@@ -1,5 +1,3 @@
-from typing import Optional
-
 from Main.core.helpers.regex_helper import Compiled as _Compiled
 
 class MessageHelper:

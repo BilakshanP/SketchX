@@ -1,4 +1,5 @@
 from os import getenv as _getenv
+from typing import Any
 from dotenv import load_dotenv as _load_dotenv
 
 from Main.core.helpers.logging_helper import info as _info, error as _error, warn as _warn
@@ -9,7 +10,7 @@ def load_env() -> bool:
     """
     return _load_dotenv()
 
-def get_env_or_default(env: str, is_essential: bool = True, default = None, silence: bool = False):
+def get_env_or_default(env: str, is_essential: bool = True, default: None | Any = None, silence: bool = False):
     """
     If `is_essential` is set to `True` (by default) it will inform and exit the program.
     Otherwise if it is set to `False` it will inform and would return the `default` argument.

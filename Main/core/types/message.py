@@ -24,11 +24,11 @@ class Message(_Message):
 
     async def initialise_attributes(self) -> tuple[str|None, list[str], dict[str, str], str, str]:
         self.input, self.args, self.kwargs, self.cmd = MessageHelper.process_input(self.text)
-        
+
         chat_type = str(self.chat.type).lower()
 
         if chat_type.startswith("chattype"):
             self.chat_type = chat_type.split("chattype.")[1]
-        
+
 
         return self.input, self.args, self.kwargs, self.cmd, self.chat_type

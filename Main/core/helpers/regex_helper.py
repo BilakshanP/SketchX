@@ -1,14 +1,15 @@
-import re
+from typing import Any
+from re import compile, Pattern
 
 
 class Compiled:
-    env_match: re.Pattern = re.compile(r"^[a-zA-Z]\w+\s?=\s?.+$") # matches .env type files i.e X123 = SomeVal
-    config_dict_match_1: re.Pattern = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*") # matches (var, val), ... you can add ,* and \s*
-    config_dict_match_2: re.Pattern = re.compile(r"[a-zA-Z_]\w*\s*:\s*.*?;") # matches var:val; ... you can add ;* and \s*
+    env_match: Pattern[Any] = compile(r"^[a-zA-Z]\w+\s?=\s?.+$") # matches .env type files i.e X123 = SomeVal
+    config_dict_match_1: Pattern[Any] = compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*") # matches (var, val), ... you can add ,* and \s*
+    config_dict_match_2: Pattern[Any] = compile(r"[a-zA-Z_]\w*\s*:\s*.*?;") # matches var:val; ... you can add ;* and \s*
 
-    command_match: re.Pattern = re.compile(r"\.\w+\s+(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
-    command_match_args: re.Pattern = re.compile(r"(?<=-)\w(?!\w)")
-    compile_match_kwargs: re.Pattern = re.compile(r"--(\w{2,})\s?=\s?(\w+)")
+    command_match: Pattern[Any] = compile(r"\.\w+\s+(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
+    command_match_args: Pattern[Any] = compile(r"(?<=-)\w(?!\w)")
+    compile_match_kwargs: Pattern[Any] = compile(r"--(\w{2,})\s?=\s?(\w+)")
 
 
 

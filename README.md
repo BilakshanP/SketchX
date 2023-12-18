@@ -45,7 +45,7 @@ def on_command(
         group_only: bool = False,
         channel_only: bool = False,
         private_only: bool = False,
-        
+
         requires_input: bool = False,
         requires_reply: bool = False,
 ):

@@ -37,7 +37,7 @@ def load_clients() -> tuple[list[Client], list[Client]]:
                 else:
                     _error(f"Couldn't load main [{name.upper()}]. Exitting...")
                     quit()
-        
+
         _empty()
 
     return clients

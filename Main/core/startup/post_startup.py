@@ -40,7 +40,7 @@ def load_all_local_plugins(file: str):
 
                 else:
                     _warn(f"Skipping module [{name}]: {plugin_file_name}.py")
-    
+
     _empty()
 
 async def run_all_clients(clients: tuple[list[Client], list[Client]]):
@@ -62,10 +62,10 @@ async def run_all_clients(clients: tuple[list[Client], list[Client]]):
             except BaseException as e:
 
                 if index:
-                    _exception("", "    ")
+                    _exception(str(e), "    ")
                     _error(f"Couldn't start [{name}]: {num + 1}/{length}", "            ")
                 else:
-                    _exception("", "    ")
+                    _exception(str(e), "    ")
                     _error(f"Couldn't start main [{name}]. Exitting...", "            ")
                     quit()
 

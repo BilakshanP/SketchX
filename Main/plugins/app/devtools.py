@@ -12,7 +12,7 @@ async def restart(client: Client, message: Message):
 
     if (chat_id := Config.LOG_CHAT_ID):
         await client.send_message(chat_id, f"Restart requested by client {client.index}\n\n{message.id}:{message.chat.id}")
-    
+
     else:
         sleep(2.5)
         await message.delete()

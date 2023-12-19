@@ -6,9 +6,7 @@ from pyrogram.client import Client
 
 from Main import Config
 from Main.core.types import Client
-from Main.core.helpers.logging_helper import (
-    info as _info, warn as _warn, error as _error, exception as _exception, empty as _empty
-)
+from Main.core.helpers.logging_helper import info as _info, warn as _warn, error as _error, exception as _exception, empty as _empty
 
 def load_all_local_plugins(file: str):
     """
@@ -35,7 +33,7 @@ def load_all_local_plugins(file: str):
                         _info(f"Loaded module  [{name}]: {plugin_file_name}.py", "    ")
                         _empty()
 
-                    except BaseException as e:
+                    except Exception as e:
                         _exception(f"Couldn't load module [{name}]: {plugin_file_name}.py - {e}", "    ")
 
                 else:
@@ -59,7 +57,7 @@ async def run_all_clients(clients: tuple[list[Client], list[Client]]):
 
                 _info(f"Started [{name}]: {index + 1}/{length}", "        ")
 
-            except BaseException as e:
+            except Exception as e:
 
                 if index:
                     _exception(str(e), "    ")

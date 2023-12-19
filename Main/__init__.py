@@ -1,5 +1,5 @@
 from asyncio import get_event_loop
-from aiohttp import ClientSession as _ClientSession
+# from aiohttp import ClientSession as _ClientSession
 
 from Main.core.configs import Config # type: ignore
 from Main.core.data import HelpMenu
@@ -10,7 +10,7 @@ from Main.core.types import Client
 from Main.core.startup import load_clients
 
 main_loop = get_event_loop()
-aiohttp_session = _ClientSession()
+# aiohttp_session = _ClientSession()
 
 clients: tuple[list[Client], list[Client]] = load_clients()
 

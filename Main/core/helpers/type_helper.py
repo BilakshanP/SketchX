@@ -1,3 +1,5 @@
+from bs4 import BeautifulSoup
+from markdown import markdown
 from Main.core.helpers.regex_helper import Compiled as _Compiled
 
 class MessageHelper:
@@ -14,3 +16,12 @@ class MessageHelper:
             args, kwargs = [], {}
 
         return input, args, kwargs, cmd
+    
+    @staticmethod
+    def markdown_to_raw_text(raw_markdown: str) -> str:
+        html: str = markdown(raw_markdown)
+        soup: BeautifulSoup = BeautifulSoup(html, features="html.parser")
+        raw_text: str = soup.get_text()
+        return raw_text
+
+    # @staticmethod

@@ -6,7 +6,7 @@ from pyrogram import filters, StopPropagation, ContinuePropagation
 from Main import Config, Menu
 from Main.core.filters import sudo_filter
 from Main.core.types import Client, Message
-from Main.core.types.module import Arg, Kwarg, Argument, Command, Help
+from Main.core.types.module import Arg, KwArg, Arguments, Command, Help
 from Main.core.helpers.misc_helper import is_present
 from Main.core.helpers.handler_helper import add_app_handler # type: ignore
 #from Main.core.helpers.module_helpers.help_menu_helper import add_to_app_help_menu
@@ -21,7 +21,7 @@ def on_command( # type: ignore
         example: str,
 
         args: list[Arg] = [],
-        kwargs: list[Kwarg] = [],
+        kwargs: list[KwArg] = [],
 
         multiple_args: bool = False,
 
@@ -48,8 +48,8 @@ def on_command( # type: ignore
 
         group: int = 1,
 
-        module_author: str|None = None,
-        module_author_remarks: str|None = None
+        module_author: str = '',
+        module_author_remarks: str = ''
 ):
     if isinstance(command, str):
         command = [command]
@@ -113,7 +113,7 @@ def on_command( # type: ignore
                         for i in result: # type: ignore
                             try:
                                 i.delete() # type: ignore
-                            except BaseException as e:
+                            except Exception as e:
                                 _error(f"Couldn't delete message after execution.")
 
                                 _exception(f"Module: {func.__module__} - Function: {func.__name__}: {e}")
@@ -122,13 +122,13 @@ def on_command( # type: ignore
                     raise StopPropagation
                 except ContinuePropagation:
                     raise ContinuePropagation
-                except BaseException as e1:
+                except Exception as e1:
                     try:
                         await message.edit("Something went wrong, check logs.")
                         _exception(
                             f"Module: {func.__module__} - Function: {func.__name__}: {e1}"
                         )
-                    except BaseException as e2:
+                    except Exception as e2:
                         _error("An exception occured while handling of another exception: ")
 
                         _exception(
@@ -142,13 +142,13 @@ def on_command( # type: ignore
 
         Menu.add_app_command(
             Command(
-                command, Help(help, example), Argument(args, kwargs), multiple_args,
+                command, Help(help, example), Arguments(args, kwargs), multiple_args,
                 admin_only, group_only, channel_only, private_only,
                 requires_input, requires_reply,
                 requires_arguments, requires_input_if_arguments, requires_reply_if_arguments,
                 requires_keyword_arguments, requires_reply_if_keyword_arguments, requires_input_if_keyword_arguments,
                 delete, delete_delay, deny_if_sender_is_channel,
-                module_author if module_author is not None else "@Redditard", module_author_remarks
+                module_author if module_author else "@Redditard", module_author_remarks
             ),
             func.__module__.split(".")[-1], func.__name__,
         )

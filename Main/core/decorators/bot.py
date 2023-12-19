@@ -5,9 +5,10 @@ from pyrogram import filters, StopPropagation, ContinuePropagation
 
 from Main import Config, Menu
 from Main.core.types import Client, Message
-from Main.core.types.module import Arg, Kwarg, Argument, Command, Help
+from Main.core.types.module import Arg, KwArg, Arguments, Command, Help
 from Main.core.helpers.handler_helper import add_bot_handler # type: ignore
 from Main.core.helpers.logging_helper import error as _error, warn as _warn, exception as _exception, debug as _debug # type: ignore
+
 
 def on_command( # type: ignore
         command: Union[str, list[str]],
@@ -15,7 +16,7 @@ def on_command( # type: ignore
         example: str,
 
         args: list[Arg] = [],
-        kwargs: list[Kwarg] = [],
+        kwargs: list[KwArg] = [],
 
         multiple_args: bool = False,
 
@@ -44,8 +45,8 @@ def on_command( # type: ignore
 
         group: int = 1,
 
-        module_author: str|None = None,
-        module_author_remarks: str|None = None
+        module_author: str = '',
+        module_author_remarks: str = ''
 ):
     if isinstance(command, str):
         command = [command]
@@ -92,9 +93,9 @@ def on_command( # type: ignore
                 if requires_input_if_keyword_arguments and not message.input:
                     return await message.reply(f"An input is required if keyword arguments are passed to {cmd} command.") # type: ignore
                 if requires_reply_if_keyword_arguments and not message.reply_to_message:
-                    return await message.replt(f"A reply is required if keyword arguments are passed to {cmd} command.") # type: ignore
+                    return await message.reply(f"A reply is required if keyword arguments are passed to {cmd} command.") # type: ignore
             if not multiple_args and len(message.args) > 1:
-                return await message.replt(f"Command {cmd} doesn't allow multiple arguments.") # type: ignore
+                return await message.reply(f"Command {cmd} doesn't allow multiple arguments.") # type: ignore
 
             try:
                 result: Union[Message, list[Message]] = await func(client, message) # type: ignore
@@ -108,7 +109,7 @@ def on_command( # type: ignore
                     for i in result: # type: ignore
                         try:
                             i.delete() # type: ignore
-                        except BaseException as e:
+                        except Exception as e:
                             _error(f"Couldn't delete message after execution.")
 
                             _exception(f"Module: {func.__module__} - Function: {func.__name__}: {e}")
@@ -117,13 +118,13 @@ def on_command( # type: ignore
                 raise StopPropagation
             except ContinuePropagation:
                 raise ContinuePropagation
-            except BaseException as e1:
+            except Exception as e1:
                 try:
                     await message.reply("Something went wrong, check logs.") # type: ignore
                     _exception(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e1}"
                     )
-                except BaseException as e2:
+                except Exception as e2:
                     _error("An exception occured while handling of another exception: ")
                     _exception(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e2} during {e1}"
@@ -132,13 +133,13 @@ def on_command( # type: ignore
         add_bot_handler(wrapper, base_filters, func.__name__, group)
         Menu.add_bot_command(
             Command(
-                command, Help(help, example), Argument(args, kwargs), multiple_args,
+                command, Help(help, example), Arguments(args, kwargs), multiple_args,
                 admin_only, group_only, channel_only, private_only,
                 requires_input, requires_reply,
                 requires_arguments, requires_input_if_arguments, requires_reply_if_arguments,
                 requires_keyword_arguments, requires_reply_if_keyword_arguments, requires_input_if_keyword_arguments,
                 delete, delete_delay, deny_if_sender_is_channel,
-                module_author if module_author is not None else "@Redditard", module_author_remarks
+                module_author if module_author else "@Redditard", module_author_remarks
             ),
             func.__module__.split(".")[-1], func.__name__,
         )

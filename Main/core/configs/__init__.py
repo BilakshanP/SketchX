@@ -1,18 +1,27 @@
 import re
 
 from typing import Optional
+from logging import NOTSET, INFO, DEBUG
 
 from Main.core.helpers.regex_helper import str_to_dict
 from Main.core.helpers.misc_helper import set_to_empty
-from Main.core.helpers import env_helper as _env_helper, logging_helper as _logging_helper
+from Main.core.helpers import env_helper as _env_helper
 
-_env_helper._load_dotenv()
+_env_helper._load_dotenv() # type: ignore
 
 get_env = _env_helper.get_env_or_default
 get_env_int = _env_helper.get_env_int_or_None
 get_env_bool = _env_helper.get_env_bool_or_default
 
 regex = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*")
+
+def _get_log_level() -> int:
+    match get_env("SUPER_LOG_LEVEL", False):
+        case "INFO": return INFO
+        case "DEBUG": return DEBUG
+        case _: return NOTSET
+        
+
 
 class Config:
     """
@@ -65,6 +74,9 @@ class Config:
     # For developers
 
     DEBUG: bool = get_env_bool("DEBUG", False)
+    SUPER_LOG: bool = get_env_bool("DEBUG", True)
+    SUPER_LOG_LEVEL: int = _get_log_level() if SUPER_LOG else NOTSET
+    SUPER_LOG_TO_CONSOLE: bool = get_env_bool("SUPER_LOG_TO_CONSOLE", False, False)
 
     FORCE: bool = get_env_bool("FORCE", False)
 
@@ -80,19 +92,19 @@ class Config:
 
     # Conditional Statements and Fallbacks
 
-    SESSION_STRINGS = set_to_empty(SESSION_STRINGS)
-    BOT_TOKENS = set_to_empty(BOT_TOKENS)
+    SESSION_STRINGS = set_to_empty(SESSION_STRINGS) # type: ignore
+    BOT_TOKENS = set_to_empty(BOT_TOKENS) # type: ignore
 
-    MAIN_MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_APP)
-    MAIN_MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_BOT)
-    MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MODULE_PLUGIN_NO_LOAD_APP)
-    MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MODULE_PLUGIN_NO_LOAD_BOT)
-    MAIN_FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_APP)
-    MAIN_FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_BOT)
-    FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(FUNC_PLUGIN_NO_LOAD_APP)
-    FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(FUNC_PLUGIN_NO_LOAD_BOT)
+    MAIN_MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_APP) # type: ignore
+    MAIN_MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_MODULE_PLUGIN_NO_LOAD_BOT) # type: ignore
+    MODULE_PLUGIN_NO_LOAD_APP = set_to_empty(MODULE_PLUGIN_NO_LOAD_APP) # type: ignore
+    MODULE_PLUGIN_NO_LOAD_BOT = set_to_empty(MODULE_PLUGIN_NO_LOAD_BOT) # type: ignore
+    MAIN_FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_APP) # type: ignore
+    MAIN_FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(MAIN_FUNC_PLUGIN_NO_LOAD_BOT) # type: ignore
+    FUNC_PLUGIN_NO_LOAD_APP = set_to_empty(FUNC_PLUGIN_NO_LOAD_APP) # type: ignore
+    FUNC_PLUGIN_NO_LOAD_BOT = set_to_empty(FUNC_PLUGIN_NO_LOAD_BOT) # type: ignore
 
-    CUSTOM_DIRECTORIES = set_to_empty(CUSTOM_DIRECTORIES)
+    CUSTOM_DIRECTORIES = set_to_empty(CUSTOM_DIRECTORIES) # type: ignore
 
     # Compounds:
 

@@ -13,8 +13,8 @@ if Config.DEBUG:
             "json <reply to message>*"
     )
     async def json(client: Client, message: Message):
-        print(message)
-        await message.edit(f"`{message}`")
+        print(f"{message.text} {message.input} {message.args} {message.kwargs} {message.cmd}")
+        await message.edit_advance(f"`{message}`", as_file = 'f' in message.args)
 
     @app.on_command(
             "args",

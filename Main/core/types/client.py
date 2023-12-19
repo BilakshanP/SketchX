@@ -4,15 +4,15 @@ from pyrogram.client import Client as _Client
 from pyrogram.types.user_and_chats.user import User
 
 from Main import Config
-from Main.core.decorators.patches import monkeypatch
+from Main.core.decorators.patches import monkeypatch # type: ignore
 
 @monkeypatch(_Client)
 class Client(_Client):
     """
     Type hinting help class for `pyrogram.client.Client`
     """
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs) -> None: # type: ignore
+        super().__init__(*args, **kwargs) # type: ignore
 
         # for type hinting and auto completion of custom attributes:
 

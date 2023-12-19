@@ -15,13 +15,13 @@ def get_env_or_default(env: str, is_essential: bool = True, default: None | Any 
     If `is_essential` is set to `True` (by default) it will inform and exit the program.
     Otherwise if it is set to `False` it will inform and would return the `default` argument.
     """
-    if env_vale := _getenv(env, default):
-        if env_vale == default:
+    if env_value := _getenv(env, default):
+        if env_value == default:
             _warn(f"Environment variable '{env}' couldn't be found. Using defaults.", silence = silence)
         else:
             _info(f"Environment variable '{env}' found.", silence = silence)
 
-        return env_vale
+        return env_value
 
     if is_essential:
         if not silence:
@@ -36,12 +36,12 @@ def get_env_int_or_None(env: str, is_essential: bool = True, silence: bool = Fal
     """
     Returns integer from the environmental variables if valid else, it returns `None`.
     """
-    value: str|None = get_env_or_default(env, False, silence = True)
+    env_value: str|None = get_env_or_default(env, False, silence = True)
 
-    if value:
-        if value.isnumeric() or (value[0] == "-" and value[1:].isnumeric()):
+    if env_value:
+        if env_value.isnumeric() or (env_value[0] == "-" and env_value[1:].isnumeric()):
             _info(f"Environment variable '{env}' found.", silence = silence)
-            return int(value)
+            return int(env_value)
 
         _warn(f"Environment variable '{env}' isn't numeric. Skipping...", silence = silence)
         return None

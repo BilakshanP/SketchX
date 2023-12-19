@@ -7,24 +7,33 @@ class Arg:
     @staticmethod
     def new_from_tupled_list(tupled_list: list[tuple[str, str, str]]):
         return [Arg(i[0], i[1], i[2]) for i in tupled_list]
-class Kwarg(Arg):
+    
+    def __repr__(self) -> str:
+        return f"{{Key: {self.key}, Usage: {self.usage}, Example: {self.usage}}}"
+    
+class KwArg(Arg):
     pass
 
-class Argument:
-    def __init__(self, args: list[Arg], kwargs: list[Kwarg]):
+class Arguments:
+    def __init__(self, args: list[Arg], kwargs: list[KwArg]):
         self.args = args
         self.kwargs = kwargs
+
+    def __repr__(self) -> str:
+        return f"{{Args: {self.args}, KwArgs: {self.kwargs}}}"
 
 class Help:
     def __init__(self, help: str, example: str):
         self.help = help
         self.example = example
+    
+    
 
 class Command:
     def __init__(self,
         cmd: list[str],
         cmd_help: Help,
-        arguments: Argument,
+        arguments: Arguments,
 
         multiple_args: bool = True,
 
@@ -49,8 +58,8 @@ class Command:
 
         deny_if_sender_is_channel: bool = False,
 
-        module_author: str|None = None,
-        module_author_remarks: str|None  = None
+        module_author: str = '',
+        module_author_remarks: str  = ''
     ):
         self.cmd = cmd
         self.name = cmd[0]

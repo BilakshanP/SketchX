@@ -8,6 +8,9 @@ tgcrypto            # required for faster connection
 uvloop              # for improved async networking
 vanilite            # for string localisation
 
+bs4
+markdown
+
 # requests
 
 # serial: asyncio* > aiohttp > python-dotenv > pytz > tgcrypto* > pyrofork > uvloop > vanilite?

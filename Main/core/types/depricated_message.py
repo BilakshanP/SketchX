@@ -23,7 +23,7 @@ async def edit(
     if len(text) > 4096:
         try:
             text = f"Text too long! Pasted on [Nekobin]({await paste(text)})."
-        except BaseException as e1:
+        except Exception as e1:
             traceback = format_exc().replace("\n", "\n    ")
 
             _exception(

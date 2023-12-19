@@ -1,4 +1,4 @@
-from Main.core.types.module import Arg, Argument, Command, Module # type: ignore
+from Main.core.types.module import Arg, Arguments, Command, Module # type: ignore
 
 class HelpMenu:
     app_help_menu: dict[str, Module] = {}

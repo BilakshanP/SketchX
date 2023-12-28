@@ -10,9 +10,11 @@ class Arg:
     
     def __repr__(self) -> str:
         return f"{{Key: {self.key}, Usage: {self.usage}, Example: {self.usage}}}"
-    
+
+
 class KwArg(Arg):
     pass
+
 
 class Arguments:
     def __init__(self, args: list[Arg], kwargs: list[KwArg]):
@@ -26,7 +28,6 @@ class Help:
     def __init__(self, help: str, example: str):
         self.help = help
         self.example = example
-    
     
 
 class Command:
@@ -92,6 +93,7 @@ class Command:
 
         self.module_author = module_author
         self.module_author_remarks = module_author_remarks
+
 class Module:
     def __init__(self, module_name: str, module_author: str, module_author_remarks: str|None):
         self.module_name = module_name

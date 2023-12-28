@@ -39,6 +39,8 @@ class Config:
     API_ID: Optional[int] = get_env_int("API_ID")
     API_HASH: Optional[str] = get_env("API_HASH")
 
+    OWNER_ID: int = get_env_int("OWNER_ID", True) # type: ignore
+
     MAIN_SESSION: Optional[str] = get_env("MAIN_SESSION") 
 
     COMMAND_HANDLER_APP: str = get_env("COMMAND_HANDLER_APP", False, ".") # type: ignore

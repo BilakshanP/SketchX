@@ -26,7 +26,7 @@ def generic_logger(
     file_name = "logs/" + type.lower() + ".log"
 
     if not silence:
-        print(f"{append}[{symbol}]: {message}", end = nl)
+        print(f"[{symbol}]: {append}{message}", end = nl)
 
     if save_to_file:
         text: str = f"[{type}] @ {time()} {symbol} {append} {message}{nl}"
@@ -53,7 +53,7 @@ def exception(message: str, append: str = "", new_line: bool = True, silence: bo
     generic_logger(message + "\n" + exception_traceback_formatter(append), "EXCEPTION", "#", True, append, new_line, silence)
 
 def empty():
-    print()
+    print("[ ]: ")
 
     with open("logs/logs.log", "a") as file:
         file.write(f"[    ] @ {time()}\n")

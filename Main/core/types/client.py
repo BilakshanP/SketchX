@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pyrogram.client import Client as _Client
 from pyrogram.types.user_and_chats.user import User
@@ -32,8 +32,13 @@ class Client(_Client):
             self.my_info = await self.get_me()
             self.last_info_update_time = datetime.now()
 
-    async def get_client(self) -> User:
-        self.my_info = await self.get_me()
-        self.last_update_time = datetime.now()
+    async def get_client(self, force: bool = False) -> User:
+        if self.my_info is None or self.last_info_update_time is None or (datetime.now() - self.last_info_update_time) > timedelta(minutes=1) or force:
+            self.my_info = await self.get_me()
+            self.last_info_update_time = datetime.now()
 
         return self.my_info
+    
+    @property
+    async def get_my_info(self, force: bool = False) -> User:
+        return await self.get_client(force)

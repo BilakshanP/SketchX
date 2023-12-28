@@ -64,8 +64,11 @@ def on_command( # type: ignore
         async def wrapper(client: Client, message: Message):
             _debug(f"Called {func.__module__}.{func.__name__}")
 
+
             if Config.FORCE or not is_present("#NoUB", [message.chat.title, message.chat.first_name, message.chat.last_name]):
                 await message.initialise_attributes()
+
+                _debug(f"Raw text: {message.text}, Command: {message.cmd}, Input: {message.input}, Args: {message.args}, Kwargs: {message.kwargs}, Char Type: {message.chat_type}")
 
                 cmd: str = f"`{Config.COMMAND_HANDLER_APP}{message.cmd}`"
 

@@ -9,7 +9,7 @@ Credits: Altruix/Altruix, TheHamkerCat/WilliamButcherBot & DevsExpo/Friday
 <h2> Local Termux/Linux Deploy: </h2>
 
 ``` bash
-git clone https://github.com/BilakshanP/SketchX # or try appending '.git'
+git clone https://github.com/BilakshanP/SketchX.git
 cd SketchX
 cp .sample.env .env
 nano .env

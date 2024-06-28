@@ -68,14 +68,12 @@ def on_command( # type: ignore
             if Config.FORCE or not is_present("#NoUB", [message.chat.title, message.chat.first_name, message.chat.last_name]):
                 await message.initialise_attributes()
 
-                _debug(f"Raw text: {message.text}, Command: {message.cmd}, Input: {message.input}, Args: {message.args}, Kwargs: {message.kwargs}, Char Type: {message.chat_type}")
+                _debug(f"Raw text: {message.text}, Command: {message.cmd}, Input: {message.input}, Args: {message.args}, Kwargs: {message.kwargs}, Chat Type: {message.chat_type}")
 
                 cmd: str = f"`{Config.COMMAND_HANDLER_APP}{message.cmd}`"
 
                 if deny_if_sender_is_channel and (rtm := message.reply_to_message) and (sc := rtm.sender_chat) and sc.id:
                     return await message.edit(f"A channel can't execute {cmd} command.")
-
-                # if admin_only...
 
                 if group_only and message.chat_type not in "supergroup":
                     return await message.edit(f"Command {cmd} can only be used in a group chat.")
@@ -83,6 +81,14 @@ def on_command( # type: ignore
                     return await message.edit(f"Command {cmd} can only be used in a channel.")
                 if private_only and message.chat_type != "private":
                     return await message.edit(f"Command {cmd} can only be used in a private chat.")
+        
+                if admin_only:
+                    user = await client.get_chat_member(message.chat.id, message.from_user.id)
+                    status = user.status
+
+                    if not (bool(status.ADMINISTRATOR) or bool(status.OWNER)):
+                        return await message.edit(f"Command {cmd} can only be used by an admin.")
+
                 if requires_input and message.input == '':
                     return await message.edit(f"An input is required to execute {cmd} command.")
                 if requires_reply and not message.reply_to_message:

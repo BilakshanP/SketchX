@@ -6,7 +6,7 @@ from pyrogram.types import Message as _Message, MessageEntity, InlineKeyboardMar
 
 from Main import Config
 from Main.core.types import Client
-from Main.core.types.module import Arg, KwArg
+# from Main.core.types.module import Arg, KwArg
 from Main.core.errors.error import ClientIsNone
 from Main.core.helpers.paste_helper import paste
 from Main.core.helpers.logging_helper import debug as _debug, error as _error
@@ -43,7 +43,7 @@ class Message(_Message):
     
     @staticmethod
     async def from_raw_message(raw_message: _Message) -> "Message":
-        raw_message.input, raw_message.args, raw_message.kwargs, raw_message.cmd, raw_message.chat_type = Message.initialise_attributes(raw_message) # type: ignore
+        raw_message.input, raw_message.args, raw_message.kwargs, raw_message.cmd, raw_message.chat_type = await Message.initialise_attributes(raw_message) # type: ignore
         return raw_message # type: ignore
 
     @staticmethod

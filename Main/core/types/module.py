@@ -1,19 +1,22 @@
 class Arg:
-    def __init__(self, key: str, usage: str, example: str):
+    def __init__(self, key: str, usage: str, example: str, explanation: str, aliases: list[str]|None = None):
         self.key = key
         self.usage = usage
         self.example = example
+        self.explanation = explanation
+        self.aliases = aliases
 
     @staticmethod
-    def new_from_tupled_list(tupled_list: list[tuple[str, str, str]]):
-        return [Arg(i[0], i[1], i[2]) for i in tupled_list]
+    def new_from_tupled_list(tupled_list: list[tuple[str, str, str, str, list[str]|None]]):
+        return [Arg(i[0], i[1], i[2], i[3], i[4]) for i in tupled_list]
     
     def __repr__(self) -> str:
-        return f"{{Key: {self.key}, Usage: {self.usage}, Example: {self.usage}}}"
+        return f"{{Key: {self.key}, Usage: {self.usage}, Example: {self.usage}}}" + f", Aliases: {self.aliases}" if self.aliases is not None else ""
 
 
 class KwArg(Arg):
-    pass
+    def __repr__(self) -> str:
+        return f"{{Key: {self.key}, Usage: --{self.key}={self.usage}, Example: {self.usage}}}"
 
 
 class Arguments:

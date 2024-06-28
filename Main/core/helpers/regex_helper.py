@@ -9,7 +9,7 @@ class Compiled:
 
     command_match: Pattern[Any] = compile(r"\.\w+\s+(((-\w\s?)|(--\w{2,}\s?=\s?\w+\s?))+)*")
     command_match_args: Pattern[Any] = compile(r"(?<=-)\w(?!\w)")
-    compile_match_kwargs: Pattern[Any] = compile(r"--(\w{2,})\s?=\s?(\w+)")
+    compile_match_kwargs: Pattern[Any] = compile(r"(--(\w{2,})\s?=\s?([^;]+))(?=;)") # --(\w{2,})\s?=\s?(\w+)")
 
 
 

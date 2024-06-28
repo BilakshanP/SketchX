@@ -15,12 +15,13 @@ get_env_bool = _env_helper.get_env_bool_or_default
 
 regex = re.compile(r"\([a-zA-Z_]\w*\s*,\s*.*?\),*")
 
+
 def _get_log_level() -> int:
     match get_env("SUPER_LOG_LEVEL", False):
         case "INFO": return INFO
         case "DEBUG": return DEBUG
         case _: return NOTSET
-        
+
 
 
 class Config:

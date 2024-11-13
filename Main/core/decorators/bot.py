@@ -1,17 +1,20 @@
 from time import sleep
-from typing import Union, Callable
+from typing import Any, Callable, Coroutine, Awaitable
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
+
+from pyrogram.types import ReplyKeyboardMarkup
 
 from Main import Config, Menu
 from Main.core.types import Client, Message
 from Main.core.types.module import Arg, KwArg, Arguments, Command, Help
-from Main.core.helpers.handler_helper import add_bot_handler # type: ignore
-from Main.core.helpers.logging_helper import error as _error, warn as _warn, exception as _exception, debug as _debug # type: ignore
+from Main.core.helpers.decorator_helper import process_bot_message
+from Main.core.helpers.handler_helper import add_bot_handler 
+from Main.core.helpers.logging_helper import error as _error, exception as _exception, debug as _debug 
 
 
-def on_command( # type: ignore
-        command: Union[str, list[str]],
+def on_command(
+        command: str | list[str],
         help: str,
         example: str,
 
@@ -47,7 +50,7 @@ def on_command( # type: ignore
 
         module_author: str = '',
         module_author_remarks: str = ''
-):
+) -> Callable[[Client, Message], Coroutine[Any, Any, Message | None]]:
     if isinstance(command, str):
         command = [command]
 
@@ -55,60 +58,40 @@ def on_command( # type: ignore
         filters.incoming & filters.text & filters.command(command, ["/", Config.COMMAND_HANDLER_BOT])
     )
 
-    def decorator(func: Callable): # type: ignore
-        async def wrapper(client: Client, message: Message): # type: ignore
+    def decorator(func: Callable[[Client, Message], Awaitable[Message | list[Message] | None]]): 
+        async def wrapper(client: Client, message: Message): 
             _debug(f"Called {func.__module__}.{func.__name__}")
 
             await message.initialise_attributes()
 
             cmd: str = f"`{Config.COMMAND_HANDLER_BOT}{message.cmd}`"
 
-            if deny_if_sender_is_channel and (rtm := message.reply_to_message) and (sc := rtm.sender_chat) and sc.id:
-                return await message.edit(f"A channel can't execute {cmd} command.")
+            processed_message = await Message.from_raw_message_or_none(
+                await process_bot_message(
+                    client, message, cmd, multiple_args,
+                    sudo_only, admin_only, group_only, channel_only, private_only,
+                    requires_input, requires_reply,
+                    requires_arguments, requires_input_if_arguments, requires_reply_if_arguments,
+                    requires_keyword_arguments, requires_input_if_keyword_arguments, requires_reply_if_keyword_arguments,
+                    deny_if_sender_is_channel
+                )
+            )
 
-            # if admin_only...
-
-            if sudo_only and not message.from_user.id if message.from_user.id in Config.SUDO_USERS else True:
-                return await message.reply(f"Command {cmd} can only be used by sudousers.") # type: ignore
-            if group_only and message.chat_type not in "supergroup":
-                return await message.reply(f"Command {cmd} can only be used in a group chat.") # type: ignore
-            if channel_only and message.chat_type != "channel":
-                return await message.reply(f"Command {cmd} can only be used in a channel.") # type: ignore
-            if private_only and message.chat_type != "private":
-                return await message.reply(f"Command {cmd} can only be used in a private chat.") # type: ignore
-            if requires_input and message.input == '':
-                return await message.reply(f"An input is required to execute {cmd} command.") # type: ignore
-            if requires_reply and not message.reply_to_message:
-                return await message.reply(f"A reply is required to execute {cmd} command.") # type: ignore
-            if requires_arguments and not message.args:
-                return await message.reply(f"An argument is required to execute {cmd} command.") # type: ignore
-            if requires_keyword_arguments and not message.kwargs:
-                return await message.reply(f"A keyword argument is required to execute {cmd} command.") # type: ignore
-            if message.args:
-                if requires_input_if_arguments and not message.input:
-                    return await message.reply(f"An input is required if arguments are passed to {cmd} command.") # type: ignore
-                if requires_reply_if_arguments and not message.reply_to_message:
-                    return await message.reply(f"A reply is required if arguments are passed to {cmd} command.") # type: ignore
-            if message.kwargs:
-                if requires_input_if_keyword_arguments and not message.input:
-                    return await message.reply(f"An input is required if keyword arguments are passed to {cmd} command.") # type: ignore
-                if requires_reply_if_keyword_arguments and not message.reply_to_message:
-                    return await message.reply(f"A reply is required if keyword arguments are passed to {cmd} command.") # type: ignore
-            if not multiple_args and len(message.args) > 1:
-                return await message.reply(f"Command {cmd} doesn't allow multiple arguments.") # type: ignore
+            if processed_message is not None:
+                return processed_message
 
             try:
-                result: Union[Message, list[Message]] = await func(client, message) # type: ignore
+                result: Message | list[Message] | None = await func(client, message) 
 
-                if delete:
+                if delete and result is not None:
                     sleep(delete_delay)
 
                     if isinstance(result, Message):
                         result = [result]
 
-                    for i in result: # type: ignore
+                    for i in result: 
                         try:
-                            i.delete() # type: ignore
+                            await i.delete() 
                         except Exception as e:
                             _error(f"Couldn't delete message after execution.")
 
@@ -120,7 +103,7 @@ def on_command( # type: ignore
                 raise ContinuePropagation
             except Exception as e1:
                 try:
-                    await message.reply("Something went wrong, check logs.") # type: ignore
+                    await message.reply_text("Something went wrong, check logs.") 
                     _exception(
                         f"Module: {func.__module__} - Function: {func.__name__}: {e1}"
                     )
@@ -144,4 +127,4 @@ def on_command( # type: ignore
             func.__module__.split(".")[-1], func.__name__,
         )
         return wrapper
-    return decorator # type: ignore
+    return decorator

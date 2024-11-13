@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
 from markdown import markdown
-from Main.core.types.module import Arg, KwArg, Arguments, Help, Command, Module # type: ignore
 from Main.core.helpers.regex_helper import Compiled as _Compiled
 
-cmd = type[str]
-input = type[str]
+# cmd = type[str]
+# input = type[str]
 
 class MessageHelper:
     @staticmethod
@@ -22,7 +21,7 @@ class MessageHelper:
         return input, args, kwargs, cmd
 
     # @staticmethod
-    # def process_input_2(text: str) -> tuple[cmd, Arguments, input]
+    # def process_input_2(text: str) -> tuple[cmd, Arguments, input]:
     #     if match := _Compiled.command_match.match(text):
     #         raw_match = match.group()
     #         input = text[len(raw_match):]

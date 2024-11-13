@@ -1,13 +1,9 @@
 from asyncio import all_tasks
 
-
+from Main import clients
 from Main.core.types import Client
-from Main import clients, main_loop # , aiohttp_session # type: ignore
-from Main.core.helpers.logging_helper import (
-    info as _info, error as _error, exception as _exception, empty as _empty
-)
-
 from Main.core.helpers.paste_helper import Paste
+from Main.core.helpers.logging_helper import info as _info, error as _error, exception as _exception, empty as _empty
 
 async def close_all_clients(clients: tuple[list[Client], list[Client]]):
     _empty()

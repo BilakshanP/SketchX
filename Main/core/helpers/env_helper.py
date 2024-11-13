@@ -10,7 +10,7 @@ def load_env() -> bool:
     """
     return _load_dotenv()
 
-def get_env_or_default(env: str, is_essential: bool = True, default: None | Any = None, silence: bool = False):
+def get_env_or_default(env: str, is_essential: bool = True, default: None | Any = None, silence: bool = False) -> str | None:
     """
     If `is_essential` is set to `True` (by default) it will inform and exit the program.
     Otherwise if it is set to `False` it will inform and would return the `default` argument.
@@ -32,7 +32,7 @@ def get_env_or_default(env: str, is_essential: bool = True, default: None | Any 
     _warn(f"Environment variable '{env}' couldn't be found. Skipping...", silence = silence)
     return default
 
-def get_env_int_or_None(env: str, is_essential: bool = True, silence: bool = False) -> int|None:
+def get_env_int_or_None(env: str, is_essential: bool = True, silence: bool = False) -> int | None:
     """
     Returns integer from the environmental variables if valid else, it returns `None`.
     """

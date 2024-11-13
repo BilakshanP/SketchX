@@ -1,7 +1,6 @@
 aiohttp             # for async http requests
-asyncio             # for async i/o
-# pyrofork            # pyrogram's updated alternative
-pyrogram
+asyncio             # for async i/o n
+pyrofork            # updated alternative to pyrogram
 python-dotenv       # used for reading .env files
 pytz                # time-zone setup
 tgcrypto            # required for faster connection

@@ -1,15 +1,15 @@
+from pyrogram.types import User, Chat
+
 from Main import Config
 
+from Main.core.types import Message, Client
+from Main.core.decorators import app
+
 if Config.DEBUG:
-    from pyrogram.types import User, Chat
-
-    from Main.core.types import Message, Client
-    from Main.core.decorators import app
-
     @app.on_command(
             "json",
             "Extracts JSON info of a pyorogram.types.Message object.",
-            "json <reply to message>*"
+            "json <reply to message>*",
     )
     async def json(client: Client, message: Message):
         print(f"{message.text} {message.input} {message.args} {message.kwargs} {message.cmd}")

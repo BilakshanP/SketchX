@@ -11,8 +11,6 @@ class Compiled:
     command_match_args: Pattern[Any] = compile(r"(?<=-)\w(?!\w)")
     compile_match_kwargs: Pattern[Any] = compile(r"(--(\w{2,})\s?=\s?([^;]+))(?=;)") # --(\w{2,})\s?=\s?(\w+)")
 
-
-
 def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
     """
     Keyword argument `format_type == 1|2`. There are total `2` format types for now: `(key, val), ...` and `key:val;`
@@ -37,4 +35,3 @@ def str_to_dict(text: str, format_type: int = 1) -> dict[str, str]:
         values.append(key_and_val[1].strip())
 
     return dict(zip(keys, values))
-

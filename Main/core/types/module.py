@@ -9,7 +9,7 @@ class Arg:
     @staticmethod
     def new_from_tupled_list(tupled_list: list[tuple[str, str, str, str, list[str]|None]]):
         return [Arg(i[0], i[1], i[2], i[3], i[4]) for i in tupled_list]
-    
+
     def __repr__(self) -> str:
         return f"{{Key: {self.key}, Usage: {self.usage}, Example: {self.usage}}}" + f", Aliases: {self.aliases}" if self.aliases is not None else ""
 
@@ -31,7 +31,7 @@ class Help:
     def __init__(self, help: str, example: str):
         self.help = help
         self.example = example
-    
+
 
 class Command:
     def __init__(self,

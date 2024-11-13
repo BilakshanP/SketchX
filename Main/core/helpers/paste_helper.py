@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
 from typing import Callable, Coroutine, Any
 
-from Main.core.errors.error import PasteException
+from Main.core.errors import PasteException
 
 async def hastebin(text: str, aiohttp_session: ClientSession) -> str:
     async with aiohttp_session as session:

@@ -7,7 +7,7 @@ def is_present(substring: str, iterable: Iterable[str|None]):
 
     return False
 
-def set_to_empty(iterable: list[Any]) -> list[Any]:
+def set_as_empty(iterable: list[Any]) -> list[Any]:
     if iterable == ['']:
         iterable = []
 

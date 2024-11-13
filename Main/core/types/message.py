@@ -1,36 +1,29 @@
 from io import BytesIO
+from typing import Any, cast
 from datetime import datetime
 
 from pyrogram.enums import ParseMode
-from pyrogram.types import Message as _Message, MessageEntity, InlineKeyboardMarkup
+from pyrogram.types import Message as PyrogramMessage, MessageEntity, InlineKeyboardMarkup
 
 from Main import Config
 from Main.core.types import Client
-# from Main.core.types.module import Arg, KwArg
-from Main.core.errors.error import ClientIsNone
+from Main.core.errors import ClientIsNone
 from Main.core.helpers.paste_helper import paste
 from Main.core.helpers.logging_helper import debug as _debug, error as _error
-from Main.core.decorators.patches import monkeypatch # type: ignore
 from Main.core.helpers.type_helper import MessageHelper
 
-@monkeypatch(_Message)
-class Message(_Message):
+class Message(PyrogramMessage):
     """
     Type hinting help class for `pyrogram.types.Message`
     """
-    def __init__(self, *args, **kwargs) -> None: # type: ignore
-        super().__init__(*args, **kwargs) # type: ignore
 
-        # for type hinting and auto completion of custom attributes:
-
+    async def initialise_attributes(self) -> tuple[str | None, list[str], dict[str, str], str, str]:
         self.input: str
         self.args: list[str]
         self.kwargs: dict[str, str]
         self.cmd: str
 
         self.chat_type: str
-
-    async def initialise_attributes(self) -> tuple[str|None, list[str], dict[str, str], str, str]:
         self.input, self.args, self.kwargs, self.cmd = MessageHelper.process_input(self.text)
 
         chat_type = str(self.chat.type).lower()
@@ -42,20 +35,25 @@ class Message(_Message):
         return self.input, self.args, self.kwargs, self.cmd, self.chat_type
     
     @staticmethod
-    async def from_raw_message(raw_message: _Message) -> "Message":
-        raw_message.input, raw_message.args, raw_message.kwargs, raw_message.cmd, raw_message.chat_type = await Message.initialise_attributes(raw_message) # type: ignore
-        return raw_message # type: ignore
+    async def from_raw_message(raw_message: PyrogramMessage) -> 'Message':
+        obj_data: dict[str, Any] = raw_message.__dict__
+
+        del obj_data['_client']
+
+        message = Message(**raw_message.__dict__)
+        await message.initialise_attributes()
+        return message
 
     @staticmethod
-    async def from_raw_message_or_none(raw_message: _Message|None) -> "Message|None":
+    async def from_raw_message_or_none(raw_message: PyrogramMessage | None) -> "Message | None":
         if raw_message:
             return await Message.from_raw_message(raw_message)
 
     
     async def edit_advance(
-            self, text: str, parse_mode: ParseMode|None = None, entities: list[MessageEntity]|None = None, disable_web_page_preview: bool|None = None, reply_markup: InlineKeyboardMarkup|None = None,
-            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str|None = None, file_caption: str = "", delete_in: int|None = None, client: Client|None = None
-        ) -> "Message|None":
+            self, text: str, parse_mode: ParseMode | None = None, entities: list[MessageEntity] = [], disable_web_page_preview: bool = False, reply_markup: InlineKeyboardMarkup | None = None,
+            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str | None = None, file_caption: str = "", delete_in: int | None = None, client: Client | None = None
+        ) -> 'Message|None':
         text = MessageHelper.markdown_to_raw_text(text)
 
         if as_paste or as_both or len(text) > 4096:
@@ -64,7 +62,7 @@ class Message(_Message):
 
             if delete_in is not None:
                 await result.delete()
-                _debug(f"A message has been delete for a return type of 'Message' thus, 'NoneType' error might be raised.")
+                _debug(f"The message has been deleted for a return type of 'Message' thus, 'NoneType' error might be raised.")
                 return
 
             if not as_both:
@@ -76,24 +74,26 @@ class Message(_Message):
             
             file: BytesIO = BytesIO(text.encode())
             file.name = file_name
+
+            if client is not None:
+                result = await client.send_document(self.chat.id, file, reply_to_message_id=self.reply_to_message_id, caption=file_caption) # type: ignore - method lacks proper type hints
+                await self.delete()
+                return await Message.from_raw_message_or_none(result)
             
-            result = await client.send_document(self.chat.id, file, reply_to_message_id=self.reply_to_message_id, caption=file_caption) # type: ignore
-            await self.delete()
+            raise ClientIsNone()
 
-            return await Message.from_raw_message_or_none(result)
-
-        return await Message.from_raw_message(await self.edit(text, parse_mode, entities, disable_web_page_preview, reply_markup)) # type: ignore
+        return await Message.from_raw_message(await self.edit(text, parse_mode, entities, disable_web_page_preview, reply_markup=cast(InlineKeyboardMarkup, reply_markup))) 
     
     async def reply_advance(
-            self, text: str, quote: bool|None = None, parse_mode: ParseMode|None = None, entities: list[MessageEntity]|None = None, disable_web_page_preview: bool|None = None, disable_notification: bool|None = None, reply_to_message_id: int|None = None, schedule_date: datetime|None = None, protect_content: bool|None = None, reply_markup: InlineKeyboardMarkup|None = None,
-            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str|None = None, file_caption: str = "", delete_in: int|None = None, client: Client|None = None
-        ) -> "Message|None":
+            self, text: str, quote: bool | None = None, parse_mode: ParseMode | None = None, entities: list[MessageEntity] = [], disable_web_page_preview: bool = False, disable_notification: bool | None = None, reply_to_message_id: int | None = None, schedule_date: datetime | None = None, protect_content: bool | None = None, reply_markup: InlineKeyboardMarkup | None = None,
+            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str | None = None, file_caption: str = "", delete_in: int | None = None, client: Client | None = None
+        ) -> 'Message|None':
         text = MessageHelper.markdown_to_raw_text(text)
 
         if as_paste or as_both or len(text) > 4096:
             bin, paste_link = await paste(text)
             result = await Message.from_raw_message(
-                await self.reply(f"**Pasted output to: __[{bin}]({paste_link})__**", disable_web_page_preview=True, reply_to_message_id=reply_to_message_id) # type: ignore
+                await self.reply(f"**Pasted output to: __[{bin}]({paste_link})__**", disable_web_page_preview=True, reply_to_message_id = cast(int, reply_to_message_id)) # type: ignore - method lacks proper type hints
             )
 
             if not as_both:
@@ -108,19 +108,21 @@ class Message(_Message):
                 _error(f"Couldn't upload the text as document. As client paramater is set to None. File: {self.__module__}")
                 return await Message.from_raw_message(result)
             
-            result = await client.send_document(self.chat.id, BytesIO(text.encode()), reply_to_message_id=self.reply_to_message_id, caption=file_caption) # type: ignore
+            result = await client.send_document(self.chat.id, BytesIO(text.encode()), reply_to_message_id=self.reply_to_message_id, caption=file_caption) # type: ignore - method lacks proper type hints
 
             await self.delete()
 
             return await Message.from_raw_message(result) if result else result
+    
+        message = await self.edit(text, parse_mode, entities, disable_web_page_preview, reply_markup=cast(InlineKeyboardMarkup, reply_markup))
 
-        return await self.edit(text, parse_mode, entities, disable_web_page_preview, reply_markup) # type: ignore
+        return await Message.from_raw_message(message)
     
     async def edit_or_reply(
-            self, text: str, parse_mode: ParseMode|None = None, entities: list[MessageEntity]|None = None, disable_web_page_preview: bool|None = None, reply_markup: InlineKeyboardMarkup|None = None,
-            quote: bool|None = None, disable_notification: bool|None = None, reply_to_message_id: int|None = None, schedule_date: datetime|None = None, protect_content: bool|None = None,
-            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str|None = None, file_caption: str = "", delete_in: int|None = None, client: Client|None = None
-    ) -> "Message|None":
+            self, text: str, parse_mode: ParseMode | None = None, entities: list[MessageEntity] = [], disable_web_page_preview: bool = False, reply_markup: InlineKeyboardMarkup | None = None,
+            quote: bool | None = None, disable_notification: bool | None = None, reply_to_message_id: int | None = None, schedule_date: datetime | None = None, protect_content: bool | None = None,
+            as_paste: bool = False, as_file: bool = False, as_both: bool = False, file_name: str | None = None, file_caption: str = "", delete_in: int | None = None, client: Client | None = None
+    ) -> 'Message|None':
         if client is None:
             raise ClientIsNone
 

@@ -1,22 +1,22 @@
 from time import sleep
-from typing import Union, Callable
 
 from pyrogram import filters, StopPropagation, ContinuePropagation
 
 from Main import Config, Menu
 from Main.core.filters import sudo_filter
-from Main.core.types import Client, Message
+from Main.core.types import Client, Message, MessageOrNone, HandlerDecoratorType, AsyncPlugin
 from Main.core.types.module import Arg, KwArg, Arguments, Command, Help
+from Main.core.helpers.decorator_helper import process_app_message
 from Main.core.helpers.misc_helper import is_present
-from Main.core.helpers.handler_helper import add_app_handler # type: ignore
+from Main.core.helpers.handler_helper import add_app_handler 
 #from Main.core.helpers.module_helpers.help_menu_helper import add_to_app_help_menu
 from Main.core.helpers.logging_helper import (
         error as _error, warn as _warn, exception as _exception, debug as _debug
     )
 
 
-def on_command( # type: ignore
-        command: Union[str, list[str]],
+def on_command( 
+        command: str | list[str],
         help: str,
         example: str,
 
@@ -25,6 +25,7 @@ def on_command( # type: ignore
 
         multiple_args: bool = False,
 
+        sudo_only: bool = False,
         admin_only: bool = False,
         group_only: bool = False,
         channel_only: bool = False,
@@ -50,7 +51,8 @@ def on_command( # type: ignore
 
         module_author: str = '',
         module_author_remarks: str = ''
-):
+# ) -> Callable[[Client, Message], Coroutine[Any, Any, Message | None]]:
+) -> HandlerDecoratorType:
     if isinstance(command, str):
         command = [command]
 
@@ -60,68 +62,45 @@ def on_command( # type: ignore
         & ~ (filters.via_bot | filters.forwarded)
     )
 
-    def decorator(func: Callable): # type: ignore
-        async def wrapper(client: Client, message: Message):
+    def decorator(func: AsyncPlugin) -> AsyncPlugin: 
+        async def wrapper(client: Client, message: Message) -> MessageOrNone:
             _debug(f"Called {func.__module__}.{func.__name__}")
 
 
             if Config.FORCE or not is_present("#NoUB", [message.chat.title, message.chat.first_name, message.chat.last_name]):
-                await message.initialise_attributes()
+                # await message.initialise_attributes()
+                message = await Message.from_raw_message(message)
 
                 _debug(f"Raw text: {message.text}, Command: {message.cmd}, Input: {message.input}, Args: {message.args}, Kwargs: {message.kwargs}, Chat Type: {message.chat_type}")
 
                 cmd: str = f"`{Config.COMMAND_HANDLER_APP}{message.cmd}`"
 
-                if deny_if_sender_is_channel and (rtm := message.reply_to_message) and (sc := rtm.sender_chat) and sc.id:
-                    return await message.edit(f"A channel can't execute {cmd} command.")
+                processed_message = await Message.from_raw_message_or_none(
+                    await process_app_message(
+                        client, message, cmd, multiple_args,
+                        sudo_only, admin_only, group_only, channel_only, private_only,
+                        requires_input, requires_reply,
+                        requires_arguments, requires_input_if_arguments, requires_reply_if_arguments,
+                        requires_keyword_arguments, requires_input_if_keyword_arguments,requires_reply_if_keyword_arguments,
+                        deny_if_sender_is_channel
+                    )
+                )
 
-                if group_only and message.chat_type not in "supergroup":
-                    return await message.edit(f"Command {cmd} can only be used in a group chat.")
-                if channel_only and message.chat_type != "channel":
-                    return await message.edit(f"Command {cmd} can only be used in a channel.")
-                if private_only and message.chat_type != "private":
-                    return await message.edit(f"Command {cmd} can only be used in a private chat.")
-        
-                if admin_only:
-                    user = await client.get_chat_member(message.chat.id, message.from_user.id)
-                    status = user.status
-
-                    if not (bool(status.ADMINISTRATOR) or bool(status.OWNER)):
-                        return await message.edit(f"Command {cmd} can only be used by an admin.")
-
-                if requires_input and message.input == '':
-                    return await message.edit(f"An input is required to execute {cmd} command.")
-                if requires_reply and not message.reply_to_message:
-                    return await message.edit(f"A reply is required to execute {cmd} command.")
-                if requires_arguments and not message.args:
-                    return await message.edit(f"An argument is required to execute {cmd} command.")
-                if requires_keyword_arguments and not message.kwargs:
-                    return await message.edit(f"A keyword argument is required to execute {cmd} command.")
-                if message.args:
-                    if requires_input_if_arguments and not message.input:
-                        return await message.edit(f"An input is required if arguments are passed to {cmd} command.")
-                    if requires_reply_if_arguments and not message.reply_to_message:
-                        return await message.edit(f"A reply is required if arguments are passed to {cmd} command.")
-                if message.kwargs:
-                    if requires_input_if_keyword_arguments and not message.input:
-                        return await message.edit(f"An input is required if keyword arguments are passed to {cmd} command.")
-                    if requires_reply_if_keyword_arguments and not message.reply_to_message:
-                        return await message.edit(f"A reply is required if keyword arguments are passed to {cmd} command.")
-                if not multiple_args and len(message.args) > 1:
-                    return await message.edit(f"Command {cmd} doesn't allow multiple arguments.")
+                if processed_message is not None:
+                    return processed_message
 
                 try:
-                    result: Union[Message, list[Message]] = await func(client, message) # type: ignore
+                    result = await func(client, message) 
 
-                    if delete:
+                    if delete and result is not None:
                         sleep(delete_delay)
 
                         if isinstance(result, Message):
                             result = [result]
 
-                        for i in result: # type: ignore
+                        for i in result: 
                             try:
-                                i.delete() # type: ignore
+                                await i.delete() 
                             except Exception as e:
                                 _error(f"Couldn't delete message after execution.")
 
@@ -164,4 +143,4 @@ def on_command( # type: ignore
 
         #add_to_app_help_menu(command, command_help, arguments, allow_multiple_args, admin_only, group_only, channel_only, private_only, requires_input, requires_reply, requires_arguments, requires_input_if_arguments, requires_input_if_arguments, func.__module__)
         return wrapper
-    return decorator # type: ignore
+    return decorator 

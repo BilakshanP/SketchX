@@ -29,7 +29,7 @@ def generic_logger(
         print(f"[{symbol}]: {append}{message}", end = nl)
 
     if save_to_file:
-        text: str = f"[{type}] @ {time()} {symbol} {append} {message}{nl}"
+        text: str = f"[{type}] @ {time()} {symbol} {append}{message}{nl}"
 
         with open(file_name, "a") as file:
             file.write(text)
